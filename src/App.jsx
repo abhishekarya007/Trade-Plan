@@ -184,70 +184,72 @@ export default function App() {
         {/* Key KPI Metrics Summary Cards */}
         <KpiSummary trades={trades} />
 
-        {/* Filter Controls Toolbar */}
-        <div className="glass-panel p-3 mb-6 flex flex-wrap items-center justify-between gap-3 text-xs border border-slate-800">
-          
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-1.5 text-slate-400 font-medium px-2 py-1">
-              <Filter className="h-3.5 w-3.5 text-cyan-400" />
-              <span>Filters:</span>
+        {/* Filter Controls Toolbar (Only shown in Journal Ledger view) */}
+        {activeTab === 'journal' && (
+          <div className="glass-panel p-3 mb-6 flex flex-wrap items-center justify-between gap-3 text-xs border border-slate-800">
+            
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-1.5 text-slate-400 font-medium px-2 py-1">
+                <Filter className="h-3.5 w-3.5 text-cyan-400" />
+                <span>Filters:</span>
+              </div>
+
+              {/* Bias Filter */}
+              <select
+                value={filterBias}
+                onChange={(e) => setFilterBias(e.target.value)}
+                className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer"
+              >
+                <option value="ALL">All Biases</option>
+                <option value="Bullish">Bullish 🟢</option>
+                <option value="Bearish">Bearish 🔴</option>
+                <option value="Neutral">Neutral 🟡</option>
+              </select>
+
+              {/* Status Filter */}
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer"
+              >
+                <option value="ALL">All Execution Statuses</option>
+                <option value="Planned">Planned (Pending)</option>
+                <option value="Executed as Planned">Executed as Planned</option>
+                <option value="Executed with Variation">Executed with Variation</option>
+                <option value="Valid Plan - Not Executed">Valid Plan - Not Executed</option>
+                <option value="Not Valid Plan">Not Valid Plan</option>
+                <option value="Setup Didn't Trigger">Setup Didn't Trigger</option>
+                <option value="Impulse Trade">Impulse Trade</option>
+              </select>
+
+              {/* Outcome Filter */}
+              <select
+                value={filterOutcome}
+                onChange={(e) => setFilterOutcome(e.target.value)}
+                className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer"
+              >
+                <option value="ALL">All Outcomes</option>
+                <option value="Pending EOD">Pending EOD</option>
+                <option value="Target Hit">Target Hit 🎯</option>
+                <option value="Partial Profit">Partial Profit ✨</option>
+                <option value="Stop Loss Hit">Stop Loss Hit 🛑</option>
+                <option value="Breakeven">Breakeven ⚖️</option>
+                <option value="No Trade">No Trade</option>
+              </select>
             </div>
 
-            {/* Bias Filter */}
-            <select
-              value={filterBias}
-              onChange={(e) => setFilterBias(e.target.value)}
-              className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer"
-            >
-              <option value="ALL">All Biases</option>
-              <option value="Bullish">Bullish 🟢</option>
-              <option value="Bearish">Bearish 🔴</option>
-              <option value="Neutral">Neutral 🟡</option>
-            </select>
-
-            {/* Status Filter */}
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer"
-            >
-              <option value="ALL">All Execution Statuses</option>
-              <option value="Planned">Planned (Pending)</option>
-              <option value="Executed as Planned">Executed as Planned</option>
-              <option value="Executed with Variation">Executed with Variation</option>
-              <option value="Valid Plan - Not Executed">Valid Plan - Not Executed</option>
-              <option value="Not Valid Plan">Not Valid Plan</option>
-              <option value="Setup Didn't Trigger">Setup Didn't Trigger</option>
-              <option value="Impulse Trade">Impulse Trade</option>
-            </select>
-
-            {/* Outcome Filter */}
-            <select
-              value={filterOutcome}
-              onChange={(e) => setFilterOutcome(e.target.value)}
-              className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer"
-            >
-              <option value="ALL">All Outcomes</option>
-              <option value="Pending EOD">Pending EOD</option>
-              <option value="Target Hit">Target Hit 🎯</option>
-              <option value="Partial Profit">Partial Profit ✨</option>
-              <option value="Stop Loss Hit">Stop Loss Hit 🛑</option>
-              <option value="Breakeven">Breakeven ⚖️</option>
-              <option value="No Trade">No Trade</option>
-            </select>
-          </div>
-
-          {/* Result Count & Tip */}
-          <div className="flex items-center gap-3">
-            <span className="text-slate-500 text-[11px] hidden sm:inline italic">
-              💡 Tip: Click any row to view full strategy details
-            </span>
-            <div className="text-slate-400 font-mono text-[11px] px-2 py-1 bg-slate-900 rounded-md border border-slate-800">
-              Showing <span className="font-bold text-white">{filteredTrades.length}</span> of {trades.length} plans
+            {/* Result Count & Tip */}
+            <div className="flex items-center gap-3">
+              <span className="text-slate-500 text-[11px] hidden sm:inline italic">
+                💡 Tip: Click any row to view full strategy details
+              </span>
+              <div className="text-slate-400 font-mono text-[11px] px-2 py-1 bg-slate-900 rounded-md border border-slate-800">
+                Showing <span className="font-bold text-white">{filteredTrades.length}</span> of {trades.length} plans
+              </div>
             </div>
-          </div>
 
-        </div>
+          </div>
+        )}
 
         {/* Dynamic Content Views */}
         {activeTab === 'journal' && (
