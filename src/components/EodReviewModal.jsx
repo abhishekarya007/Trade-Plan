@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckSquare, Star, MessageSquare, Tag, AlertCircle, Award } from 'lucide-react';
+import { X, CheckSquare, Star, MessageSquare, Tag, Award } from 'lucide-react';
 import { EXECUTION_STATUSES, OUTCOMES, EMOTION_TAGS } from '../types/trade';
 
 export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade }) {
@@ -42,46 +42,46 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-      <div className="glass-panel w-full max-w-xl overflow-hidden border border-slate-700/80 shadow-2xl animate-in fade-in zoom-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md overflow-y-auto">
+      <div className="bg-[#111622] w-full max-w-xl overflow-hidden border border-slate-800/80 rounded-2xl shadow-xl animate-in fade-in zoom-in duration-200">
         
         {/* Modal Header */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-900/60">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-              <CheckSquare className="h-5 w-5" />
+        <div className="flex items-center justify-between p-4 border-b border-slate-800/60 bg-[#0e131f]/80">
+          <div className="flex items-center gap-2.5">
+            <div className="p-1.5 rounded-lg bg-slate-800 text-emerald-400 border border-slate-700/60">
+              <CheckSquare className="h-4.5 w-4.5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold text-white">End of Day (EOD) Review</h2>
-                <span className="font-mono text-xs font-bold text-cyan-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded">
+                <h2 className="text-sm font-bold text-slate-100">End of Day (EOD) Review</h2>
+                <span className="font-mono text-xs font-bold text-cyan-400 bg-slate-800/60 px-2 py-0.5 rounded">
                   {trade.symbol}
                 </span>
               </div>
-              <p className="text-xs text-slate-400">Audit your execution accuracy & post-market reflections</p>
+              <p className="text-[11px] text-slate-400">Execution status & post-market reflections</p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+            className="p-1 text-slate-400 hover:text-slate-200 rounded-lg transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Pre-Market Plan Summary Banner */}
-        <div className="mx-5 mt-4 p-3 bg-slate-950/80 rounded-xl border border-slate-800/80 text-xs">
+        {/* Pre-Market Banner */}
+        <div className="mx-5 mt-4 p-3 bg-[#0c101a] rounded-xl border border-slate-800/80 text-xs">
           <div className="flex items-center justify-between text-slate-400 mb-1">
-            <span className="font-semibold text-slate-300">Pre-Market Plan:</span>
-            <span>{trade.setupType} • {trade.weeklyBias}/{trade.dailyBias} Bias</span>
+            <span className="font-medium text-slate-300">Pre-Market Plan:</span>
+            <span>{trade.setupType} • {trade.weeklyBias}/{trade.dailyBias}</span>
           </div>
           <p className="text-slate-400 italic line-clamp-2">
             "{trade.planRationale || 'No rationale recorded'}"
           </p>
         </div>
 
-        {/* Modal Body Form */}
+        {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           
           {/* Execution Status */}
@@ -95,10 +95,10 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
                   key={st}
                   type="button"
                   onClick={() => setStatus(st)}
-                  className={`p-2.5 rounded-xl text-xs font-semibold text-left border transition-all flex items-center justify-between ${
+                  className={`p-2 rounded-lg text-xs font-medium text-left border transition-all flex items-center justify-between ${
                     status === st
-                      ? 'bg-cyan-950 text-cyan-300 border-cyan-500 shadow-md shadow-cyan-950/40'
-                      : 'bg-slate-900/60 text-slate-400 border-slate-800 hover:border-slate-700'
+                      ? 'bg-slate-800 text-cyan-300 border-slate-700'
+                      : 'bg-[#0c101a] text-slate-400 border-slate-800 hover:border-slate-700'
                   }`}
                 >
                   <span>{st}</span>
@@ -108,25 +108,25 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
             </div>
           </div>
 
-          {/* Outcome Result */}
+          {/* Outcome */}
           <div>
             <label className="block text-xs font-medium text-slate-300 mb-1.5">
               Trade Outcome
             </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
               {OUTCOMES.filter(o => o !== 'Pending EOD').map(out => (
                 <button
                   key={out}
                   type="button"
                   onClick={() => setOutcome(out)}
-                  className={`py-2 px-3 rounded-lg text-xs font-semibold border transition-all ${
+                  className={`py-1.5 px-2.5 rounded-md text-xs font-medium border transition-all ${
                     outcome === out
                       ? out === 'Target Hit' || out === 'Partial Profit'
-                        ? 'bg-emerald-950 text-emerald-300 border-emerald-500 shadow-sm'
+                        ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800'
                         : out === 'Stop Loss Hit'
-                        ? 'bg-rose-950 text-rose-300 border-rose-500 shadow-sm'
-                        : 'bg-amber-950 text-amber-300 border-amber-500 shadow-sm'
-                      : 'bg-slate-900/60 text-slate-400 border-slate-800 hover:border-slate-700'
+                        ? 'bg-rose-950/60 text-rose-300 border-rose-800'
+                        : 'bg-amber-950/60 text-amber-300 border-amber-800'
+                      : 'bg-[#0c101a] text-slate-400 border-slate-800 hover:border-slate-700'
                   }`}
                 >
                   {out}
@@ -135,14 +135,14 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
             </div>
           </div>
 
-          {/* Interactive Discipline Score Rating */}
-          <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 flex items-center justify-between">
+          {/* Discipline Score Rating */}
+          <div className="p-3 bg-[#0c101a] rounded-xl border border-slate-800 flex items-center justify-between">
             <div>
               <label className="block text-xs font-medium text-slate-300 mb-0.5 flex items-center gap-1.5">
-                <Award className="h-4 w-4 text-amber-400" />
-                <span>Discipline Rating (Self Audit)</span>
+                <Award className="h-4 w-4 text-amber-400/80" />
+                <span>Discipline Rating</span>
               </label>
-              <p className="text-[11px] text-slate-500">How closely did you follow your trading rules?</p>
+              <p className="text-[11px] text-slate-500">Self audit rating on rule adherence</p>
             </div>
 
             <div className="flex items-center gap-1">
@@ -151,13 +151,13 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
                   key={star}
                   type="button"
                   onClick={() => setDisciplineScore(star)}
-                  className="p-1 text-amber-400 hover:scale-125 transition-transform"
+                  className="p-0.5 text-amber-400 hover:scale-110 transition-transform"
                 >
                   <Star
-                    className={`h-5 w-5 ${
+                    className={`h-4.5 w-4.5 ${
                       star <= disciplineScore
                         ? 'fill-amber-400 text-amber-400'
-                        : 'text-slate-700 fill-slate-900'
+                        : 'text-slate-800'
                     }`}
                   />
                 </button>
@@ -165,10 +165,10 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
             </div>
           </div>
 
-          {/* Behavioral / Emotion Tags */}
+          {/* Behavioral Tags */}
           <div>
             <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1">
-              <Tag className="h-3.5 w-3.5 text-cyan-400" />
+              <Tag className="h-3.5 w-3.5 text-slate-400" />
               <span>Behavioral & Mindset Tags</span>
             </label>
             <div className="flex flex-wrap gap-1.5">
@@ -179,10 +179,10 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
                     key={tag}
                     type="button"
                     onClick={() => toggleTag(tag)}
-                    className={`text-xs px-2.5 py-1 rounded-lg border transition-all ${
+                    className={`text-xs px-2.5 py-0.5 rounded-md border transition-all ${
                       isSelected
-                        ? 'bg-cyan-900/80 text-cyan-200 border-cyan-500 font-medium'
-                        : 'bg-slate-900/40 text-slate-400 border-slate-800 hover:border-slate-700'
+                        ? 'bg-slate-800 text-cyan-300 border-slate-700 font-medium'
+                        : 'bg-[#0c101a] text-slate-400 border-slate-800 hover:border-slate-700'
                     }`}
                   >
                     {isSelected ? `✓ #${tag}` : `#${tag}`}
@@ -192,36 +192,36 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
             </div>
           </div>
 
-          {/* Post-Market Reflection / Learnings */}
+          {/* Reflections */}
           <div>
             <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center gap-1">
-              <MessageSquare className="h-3.5 w-3.5 text-emerald-400" />
-              <span>EOD Reflection: What worked? What was executed? What to improve?</span>
+              <MessageSquare className="h-3.5 w-3.5 text-slate-400" />
+              <span>EOD Reflection: What worked? What to improve?</span>
             </label>
             <textarea
               rows={3}
-              placeholder="e.g. Plan worked as expected! Patiently waited for 15-min candle confirmation. Next time, exit 50% at R1 level."
+              placeholder="e.g. Followed rules 100%. Next time exit 50% position at R1..."
               value={eodNotes}
               onChange={(e) => setEodNotes(e.target.value)}
               className="glass-input w-full text-xs leading-relaxed"
             />
           </div>
 
-          {/* Modal Footer Actions */}
-          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+          {/* Footer Actions */}
+          <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800/60">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white transition-colors"
+              className="px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold px-5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 transition-all"
+              className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all"
             >
-              <CheckSquare className="h-4 w-4" />
-              <span>Save EOD Review</span>
+              <CheckSquare className="h-3.5 w-3.5" />
+              <span>Save Review</span>
             </button>
           </div>
 

@@ -14,7 +14,6 @@ import {
   Tag, 
   CheckCircle2, 
   AlertTriangle,
-  Award,
   BookOpen
 } from 'lucide-react';
 
@@ -24,23 +23,23 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
   const getBiasBadge = (bias, label) => {
     if (bias === 'Bullish') {
       return (
-        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-950/80 text-emerald-400 border border-emerald-800/80">
-          <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium bg-emerald-950/40 text-emerald-400 border border-emerald-900/40">
+          <TrendingUp className="h-3 w-3 text-emerald-400" />
           <span>{label}: Bullish</span>
         </span>
       );
     }
     if (bias === 'Bearish') {
       return (
-        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-rose-950/80 text-rose-400 border border-rose-800/80">
-          <TrendingDown className="h-3.5 w-3.5 text-rose-400" />
+        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium bg-rose-950/40 text-rose-400 border border-rose-900/40">
+          <TrendingDown className="h-3 w-3 text-rose-400" />
           <span>{label}: Bearish</span>
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-amber-950/80 text-amber-400 border border-amber-800/80">
-        <Minus className="h-3.5 w-3.5 text-amber-400" />
+      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-medium bg-amber-950/40 text-amber-400 border border-amber-900/40">
+        <Minus className="h-3 w-3 text-amber-400" />
         <span>{label}: {bias || 'Neutral'}</span>
       </span>
     );
@@ -49,56 +48,54 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
   const getStatusBadge = (status) => {
     switch (status) {
       case 'Executed as Planned':
-        return <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5" /> Executed as Planned</span>;
+        return <span className="px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-950/40 text-emerald-400 border border-emerald-900/50 flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5" /> Executed as Planned</span>;
       case 'Executed with Variation':
-        return <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5" /> Executed with Variation</span>;
+        return <span className="px-2.5 py-1 rounded-md text-xs font-medium bg-blue-950/40 text-blue-400 border border-blue-900/50 flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5" /> Executed with Variation</span>;
       case 'Valid Plan - Not Executed':
-        return <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-purple-500/10 text-purple-300 border border-purple-500/30 flex items-center gap-1.5"><AlertTriangle className="h-3.5 w-3.5" /> Plan Valid - Not Executed</span>;
+        return <span className="px-2.5 py-1 rounded-md text-xs font-medium bg-purple-950/40 text-purple-300 border border-purple-900/50 flex items-center gap-1.5"><AlertTriangle className="h-3.5 w-3.5" /> Plan Valid - Not Executed</span>;
       case 'Not Valid Plan':
-        return <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30 flex items-center gap-1.5"><AlertTriangle className="h-3.5 w-3.5" /> Not Valid Plan</span>;
+        return <span className="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-950/40 text-amber-400 border border-amber-900/50 flex items-center gap-1.5"><AlertTriangle className="h-3.5 w-3.5" /> Not Valid Plan</span>;
       case 'Setup Didn\'t Trigger':
-        return <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 border border-slate-700">Setup Didn't Trigger</span>;
+        return <span className="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-900 text-slate-400 border border-slate-800">Setup Didn't Trigger</span>;
       case 'Impulse Trade':
-        return <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/30 flex items-center gap-1.5"><AlertTriangle className="h-3.5 w-3.5" /> Impulse Trade</span>;
+        return <span className="px-2.5 py-1 rounded-md text-xs font-medium bg-rose-950/40 text-rose-400 border border-rose-900/50 flex items-center gap-1.5"><AlertTriangle className="h-3.5 w-3.5" /> Impulse Trade</span>;
       default:
-        return <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">Planned (Pending EOD)</span>;
+        return <span className="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-900 text-slate-400 border border-slate-800">Planned (Pending EOD)</span>;
     }
   };
 
   const getOutcomeBadge = (outcome) => {
     switch (outcome) {
       case 'Target Hit':
-        return <span className="font-mono text-xs font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded-md border border-emerald-700">🎯 Target Hit</span>;
+        return <span className="font-mono text-xs font-semibold text-emerald-400 bg-emerald-950/40 px-2.5 py-1 rounded-md border border-emerald-900/50">🎯 Target Hit</span>;
       case 'Partial Profit':
-        return <span className="font-mono text-xs font-bold text-emerald-300 bg-emerald-950/60 px-2.5 py-1 rounded-md border border-emerald-800">✨ Partial Profit</span>;
+        return <span className="font-mono text-xs font-semibold text-emerald-300 bg-emerald-950/30 px-2.5 py-1 rounded-md border border-emerald-900/40">✨ Partial Profit</span>;
       case 'Stop Loss Hit':
-        return <span className="font-mono text-xs font-bold text-rose-400 bg-rose-950/80 px-2.5 py-1 rounded-md border border-rose-700">🛑 Stop Loss Hit</span>;
+        return <span className="font-mono text-xs font-semibold text-rose-400 bg-rose-950/40 px-2.5 py-1 rounded-md border border-rose-900/50">🛑 Stop Loss Hit</span>;
       case 'Breakeven':
-        return <span className="font-mono text-xs font-bold text-amber-400 bg-amber-950/80 px-2.5 py-1 rounded-md border border-amber-700">⚖️ Breakeven</span>;
+        return <span className="font-mono text-xs font-semibold text-amber-400 bg-amber-950/40 px-2.5 py-1 rounded-md border border-amber-900/50">⚖️ Breakeven</span>;
       case 'No Trade':
         return <span className="font-mono text-xs font-medium text-slate-400 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800">No Execution</span>;
       default:
-        return <span className="font-mono text-xs text-cyan-400 italic">Awaiting EOD Review</span>;
+        return <span className="font-mono text-xs text-slate-500 italic">Awaiting EOD Review</span>;
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-      <div className="glass-panel w-full max-w-2xl overflow-hidden border border-slate-700/80 shadow-2xl animate-in fade-in zoom-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md overflow-y-auto">
+      <div className="bg-[#111622] w-full max-w-2xl overflow-hidden border border-slate-800/80 rounded-2xl shadow-xl animate-in fade-in zoom-in duration-200">
         
         {/* Modal Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-800 bg-slate-900/80">
+        <div className="flex items-center justify-between p-4 border-b border-slate-800/60 bg-[#0e131f]/80">
           <div className="flex items-center gap-3">
-            <div className="h-11 w-11 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-0.5 shadow-lg shadow-cyan-500/20">
-              <div className="h-full w-full bg-slate-950 rounded-[10px] flex items-center justify-center font-mono font-extrabold text-cyan-400 text-lg">
-                {trade.symbol.slice(0, 2)}
-              </div>
+            <div className="h-9 w-9 rounded-xl bg-slate-800 border border-slate-700/60 flex items-center justify-center font-mono font-bold text-cyan-400 text-base">
+              {trade.symbol.slice(0, 2)}
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl font-extrabold text-white font-mono">{trade.symbol}</h2>
-                <span className="text-xs font-bold font-mono uppercase bg-slate-800 text-cyan-400 px-2.5 py-0.5 rounded border border-slate-700">
+                <h2 className="text-lg font-bold text-slate-100 font-mono">{trade.symbol}</h2>
+                <span className="text-[10px] font-mono text-slate-400 bg-slate-800/60 px-2 py-0.5 rounded border border-slate-700/50">
                   {trade.exchange || 'NSE'}
                 </span>
               </div>
@@ -109,10 +106,10 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => { onClose(); onEditPlan(trade); }}
-              className="p-2 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition-colors flex items-center gap-1 text-xs"
+              className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors flex items-center gap-1 text-xs"
               title="Edit Trade Plan"
             >
               <Edit3 className="h-4 w-4" />
@@ -126,7 +123,7 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
                   onDeletePlan(trade.id);
                 }
               }}
-              className="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition-colors"
+              className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition-colors"
               title="Delete Trade Plan"
             >
               <Trash2 className="h-4 w-4" />
@@ -134,7 +131,7 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
 
             <button
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+              className="p-1.5 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors"
             >
               <X className="h-5 w-5" />
             </button>
@@ -142,21 +139,21 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
+        <div className="p-5 space-y-5 max-h-[75vh] overflow-y-auto">
           
           {/* Section 1: Pre-Market Strategy */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800/60">
               <div className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4 text-cyan-400" />
-                <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider">
+                <BookOpen className="h-4 w-4 text-cyan-400/80" />
+                <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
                   Pre-Market Trade Strategy
                 </h3>
               </div>
               <div className="flex items-center gap-1 text-xs text-slate-400">
                 <span>Conviction:</span>
-                <span className={`font-semibold font-mono ${
-                  trade.conviction === 'High' ? 'text-amber-400' : 'text-slate-300'
+                <span className={`font-mono ${
+                  trade.conviction === 'High' ? 'text-amber-400 font-semibold' : 'text-slate-300'
                 }`}>
                   {trade.conviction || 'Medium'}
                 </span>
@@ -164,20 +161,20 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
             </div>
 
             {/* Biases */}
-            <div className="flex flex-wrap gap-2 pt-1">
+            <div className="flex flex-wrap gap-2 pt-0.5">
               {getBiasBadge(trade.weeklyBias, 'Weekly')}
               {getBiasBadge(trade.dailyBias, 'Daily')}
               
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-900 text-slate-200 border border-slate-800">
-                <Layers className="h-3.5 w-3.5 text-cyan-400" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium bg-slate-900 text-slate-300 border border-slate-800">
+                <Layers className="h-3 w-3 text-cyan-400/80" />
                 <span>Strategy: {trade.setupType || 'General'}</span>
               </span>
             </div>
 
             {/* Plan Rationale */}
-            <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-800 space-y-1">
-              <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">
-                Plan Rationale & Technical Triggers
+            <div className="bg-[#0c101a] p-3.5 rounded-xl border border-slate-800/80 space-y-1">
+              <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
+                Plan Rationale & Triggers
               </span>
               <p className="text-xs text-slate-300 leading-relaxed font-sans whitespace-pre-wrap">
                 {trade.planRationale || 'No rationale notes recorded for this plan.'}
@@ -185,23 +182,23 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
             </div>
           </div>
 
-          {/* Section 2: End-of-Day (EOD) Execution Audit */}
-          <div className="space-y-3 pt-2">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+          {/* Section 2: End-of-Day Execution Audit */}
+          <div className="space-y-2.5 pt-1">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800/60">
               <div className="flex items-center gap-2">
-                <CheckSquare className="h-4 w-4 text-emerald-400" />
-                <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider">
+                <CheckSquare className="h-4 w-4 text-emerald-400/80" />
+                <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
                   End-of-Day Execution Audit
                 </h3>
               </div>
               {getOutcomeBadge(trade.outcome)}
             </div>
 
-            {/* Execution status pill & Discipline score */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* Execution status & Discipline score */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               
-              <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
+              <div className="p-3 bg-[#0c101a] rounded-xl border border-slate-800/80 space-y-1">
+                <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">
                   Execution Status
                 </span>
                 <div>
@@ -209,8 +206,8 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
                 </div>
               </div>
 
-              <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-1">
-                <span className="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">
+              <div className="p-3 bg-[#0c101a] rounded-xl border border-slate-800/80 space-y-1">
+                <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">
                   Discipline Self-Rating
                 </span>
                 <div className="flex items-center gap-2">
@@ -220,13 +217,13 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
                         {[1, 2, 3, 4, 5].map(star => (
                           <Star
                             key={star}
-                            className={`h-4 w-4 ${
+                            className={`h-3.5 w-3.5 ${
                               star <= trade.disciplineScore ? 'fill-amber-400 text-amber-400' : 'text-slate-800'
                             }`}
                           />
                         ))}
                       </div>
-                      <span className="font-mono text-xs font-bold text-amber-300">
+                      <span className="font-mono text-xs font-semibold text-amber-300">
                         {trade.disciplineScore}.0 / 5.0
                       </span>
                     </>
@@ -238,18 +235,18 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
 
             </div>
 
-            {/* Emotion / Behavioral Tags */}
+            {/* Behavioral Tags */}
             {trade.tags && trade.tags.length > 0 && (
-              <div className="space-y-1.5">
-                <span className="text-xs font-medium text-slate-400 flex items-center gap-1">
-                  <Tag className="h-3.5 w-3.5 text-cyan-400" />
+              <div className="space-y-1">
+                <span className="text-xs text-slate-400 flex items-center gap-1">
+                  <Tag className="h-3 w-3 text-slate-400" />
                   <span>Behavioral Tags:</span>
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {trade.tags.map((tag, idx) => (
                     <span
                       key={idx}
-                      className="bg-slate-900 text-cyan-300 border border-slate-800 text-xs px-2.5 py-1 rounded-lg font-medium"
+                      className="bg-slate-900 text-cyan-300/90 border border-slate-800 text-xs px-2 py-0.5 rounded-md font-medium"
                     >
                       #{tag}
                     </span>
@@ -258,14 +255,14 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
               </div>
             )}
 
-            {/* EOD Post-Market Reflections & Learnings */}
-            <div className="bg-emerald-950/20 p-4 rounded-xl border border-emerald-900/40 space-y-1">
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
-                <MessageSquare className="h-4 w-4" />
-                <span>Post-Market Reflections & Learnings</span>
+            {/* EOD Reflections */}
+            <div className="bg-[#0c101a] p-3.5 rounded-xl border border-slate-800/80 space-y-1">
+              <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium">
+                <MessageSquare className="h-3.5 w-3.5" />
+                <span>Post-Market Reflections</span>
               </div>
-              <p className="text-xs text-slate-200 leading-relaxed italic">
-                {trade.eodNotes ? `"${trade.eodNotes}"` : 'No post-market reflections recorded yet. Click "Update EOD Review" below to add notes.'}
+              <p className="text-xs text-slate-300 leading-relaxed italic">
+                {trade.eodNotes ? `"${trade.eodNotes}"` : 'No post-market reflections recorded yet.'}
               </p>
             </div>
 
@@ -273,20 +270,20 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
 
         </div>
 
-        {/* Modal Footer Actions */}
-        <div className="p-4 bg-slate-900/80 border-t border-slate-800 flex items-center justify-between">
+        {/* Modal Footer */}
+        <div className="p-4 bg-[#0e131f]/80 border-t border-slate-800/60 flex items-center justify-between">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-xs font-medium text-slate-400 hover:text-white transition-colors"
+            className="px-3.5 py-1.5 text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors"
           >
             Close
           </button>
 
           <button
             onClick={() => { onClose(); onOpenEodReview(trade); }}
-            className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold px-5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 transition-all"
+            className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all"
           >
-            <CheckSquare className="h-4 w-4" />
+            <CheckSquare className="h-3.5 w-3.5" />
             <span>Update EOD Review</span>
           </button>
         </div>

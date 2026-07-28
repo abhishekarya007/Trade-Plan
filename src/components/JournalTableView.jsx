@@ -8,10 +8,8 @@ import {
   Eye, 
   ChevronDown, 
   ChevronRight, 
-  Target, 
   CheckCircle2, 
   Flame, 
-  Award,
   ChevronsUpDown,
   ChevronsDownUp
 } from 'lucide-react';
@@ -63,7 +61,7 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
     });
   }, [trades]);
 
-  // Track expanded dates. Default: expand all dates initially so user sees everything instantly
+  // Track expanded dates. Default: expand all dates initially
   const [expandedDates, setExpandedDates] = useState(() => {
     const initial = {};
     if (trades) {
@@ -97,10 +95,10 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
 
     try {
       const d = new Date(dateStr + 'T00:00:00');
-      const formatted = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+      const formatted = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
       
-      if (dateStr === today) return `Today (${formatted})`;
-      if (dateStr === yesterday) return `Yesterday (${formatted})`;
+      if (dateStr === today) return `Today • ${formatted}`;
+      if (dateStr === yesterday) return `Yesterday • ${formatted}`;
       return formatted;
     } catch (e) {
       return dateStr;
@@ -118,100 +116,96 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
   const allExpanded = groupedTrades.every(g => expandedDates[g.date]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       
       {/* Accordion Controls Bar */}
-      <div className="flex items-center justify-between text-xs text-slate-400 px-1">
+      <div className="flex items-center justify-between text-xs text-slate-400 px-1 py-0.5">
         <div className="flex items-center gap-2">
-          <Calendar className="h-4 w-4 text-cyan-400" />
-          <span className="font-semibold text-slate-300">
-            {groupedTrades.length} Trading {groupedTrades.length === 1 ? 'Day' : 'Days'} Recorded
+          <Calendar className="h-3.5 w-3.5 text-slate-400" />
+          <span className="font-medium text-slate-300">
+            {groupedTrades.length} Trading {groupedTrades.length === 1 ? 'Day' : 'Days'}
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <button
-            onClick={allExpanded ? collapseAll : expandAll}
-            className="flex items-center gap-1 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 px-2.5 py-1 rounded-lg transition-colors text-xs font-medium"
-          >
-            {allExpanded ? (
-              <>
-                <ChevronsDownUp className="h-3.5 w-3.5 text-slate-400" />
-                <span>Collapse All</span>
-              </>
-            ) : (
-              <>
-                <ChevronsUpDown className="h-3.5 w-3.5 text-cyan-400" />
-                <span>Expand All</span>
-              </>
-            )}
-          </button>
-        </div>
+        <button
+          onClick={allExpanded ? collapseAll : expandAll}
+          className="flex items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors text-xs font-medium"
+        >
+          {allExpanded ? (
+            <>
+              <ChevronsDownUp className="h-3.5 w-3.5" />
+              <span>Collapse All</span>
+            </>
+          ) : (
+            <>
+              <ChevronsUpDown className="h-3.5 w-3.5" />
+              <span>Expand All</span>
+            </>
+          )}
+        </button>
       </div>
 
       {/* Date-wise Accordion Groups */}
-      <div className="space-y-3.5">
+      <div className="space-y-3">
         {groupedTrades.map((group) => {
           const isExpanded = !!expandedDates[group.date];
 
           return (
             <div 
               key={group.date}
-              className="glass-panel overflow-hidden border border-slate-800/90 rounded-xl transition-all"
+              className="glass-panel overflow-hidden border border-slate-800/60 rounded-xl transition-all"
             >
-              {/* Accordion Header Row (Daily Summary Bar) */}
+              {/* Accordion Header Row (Calm Daily Summary Bar) */}
               <div
                 onClick={() => toggleDateAccordion(group.date)}
-                className={`p-3.5 sm:px-5 flex flex-wrap items-center justify-between gap-3 cursor-pointer select-none transition-colors ${
-                  isExpanded ? 'bg-slate-900/90 border-b border-slate-800/80' : 'bg-slate-900/50 hover:bg-slate-900/80'
+                className={`px-4 py-3 flex flex-wrap items-center justify-between gap-3 cursor-pointer select-none transition-colors ${
+                  isExpanded ? 'bg-[#151c2c]/80 border-b border-slate-800/60' : 'bg-[#111622]/60 hover:bg-[#151c2c]/50'
                 }`}
               >
                 {/* Date & Expand Icon */}
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700">
+                <div className="flex items-center gap-2.5">
+                  <div className="text-slate-400">
                     {isExpanded ? (
-                      <ChevronDown className="h-4 w-4 text-cyan-400 transition-transform" />
+                      <ChevronDown className="h-4 w-4 text-cyan-400" />
                     ) : (
-                      <ChevronRight className="h-4 w-4 text-slate-400 transition-transform" />
+                      <ChevronRight className="h-4 w-4 text-slate-500" />
                     )}
                   </div>
 
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono font-bold text-sm text-white tracking-wide">
-                        {formatDateLabel(group.date)}
-                      </span>
-                      <span className="text-[10px] font-mono font-bold bg-cyan-950/80 text-cyan-300 border border-cyan-800/60 px-2 py-0.5 rounded-full">
-                        {group.totalPlans} {group.totalPlans === 1 ? 'Plan' : 'Plans'}
-                      </span>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-sm text-slate-100 font-sans tracking-wide">
+                      {formatDateLabel(group.date)}
+                    </span>
+                    <span className="text-[10px] font-mono text-slate-400 bg-slate-800/60 px-2 py-0.5 rounded-md border border-slate-700/50">
+                      {group.totalPlans} {group.totalPlans === 1 ? 'plan' : 'plans'}
+                    </span>
                   </div>
                 </div>
 
                 {/* Daily Metrics Summary Row */}
-                <div className="flex items-center gap-4 text-xs">
+                <div className="flex items-center gap-4 text-xs font-mono">
                   
                   {/* Executed Ratio */}
-                  <div className="flex items-center gap-1.5 font-mono text-slate-300">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-blue-400" />
-                    <span>{group.executedCount}/{group.totalPlans} Executed</span>
+                  <div className="flex items-center gap-1 text-slate-400">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-blue-400/80" />
+                    <span>{group.executedCount}/{group.totalPlans} executed</span>
                   </div>
 
                   {/* Daily Win Rate */}
                   {group.reviewedCount > 0 && (
-                    <div className="flex items-center gap-1.5 font-mono font-bold">
-                      <Flame className="h-3.5 w-3.5 text-emerald-400" />
+                    <div className="flex items-center gap-1 font-medium">
+                      <Flame className="h-3.5 w-3.5 text-emerald-400/80" />
                       <span className={group.winRate >= 50 ? 'text-emerald-400' : 'text-amber-400'}>
-                        {group.winRate}% Win Rate ({group.winsCount}/{group.reviewedCount})
+                        {group.winRate}% win ({group.winsCount}/{group.reviewedCount})
                       </span>
                     </div>
                   )}
 
                   {/* Avg Discipline Score */}
                   {group.avgDiscipline && (
-                    <div className="hidden sm:flex items-center gap-1 font-mono font-bold text-amber-400">
-                      <Star className="h-3.5 w-3.5 fill-amber-400" />
-                      <span>{group.avgDiscipline} Avg Discipline</span>
+                    <div className="hidden sm:flex items-center gap-1 text-amber-400/90 font-medium">
+                      <Star className="h-3.5 w-3.5 fill-amber-400/90" />
+                      <span>{group.avgDiscipline} rating</span>
                     </div>
                   )}
 
@@ -224,8 +218,8 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     
-                    {/* Sub-Header */}
-                    <thead className="bg-slate-950/60 text-slate-400 font-semibold border-b border-slate-800/60 uppercase tracking-wider text-[10px]">
+                    {/* Table Sub-Header */}
+                    <thead className="bg-[#0e131f]/90 text-slate-400 font-medium border-b border-slate-800/40 uppercase tracking-wider text-[10px]">
                       <tr>
                         <th className="py-2.5 px-4">Stock</th>
                         <th className="py-2.5 px-4">Biases (W/D)</th>
@@ -239,21 +233,21 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                       </tr>
                     </thead>
 
-                    {/* Trade Rows for this Date */}
-                    <tbody className="divide-y divide-slate-800/40 font-sans">
+                    {/* Trade Rows */}
+                    <tbody className="divide-y divide-slate-800/30 font-sans">
                       {group.trades.map((t) => (
                         <tr 
                           key={t.id} 
                           onClick={() => onSelectTrade(t)}
-                          className="hover:bg-slate-800/50 cursor-pointer transition-colors group"
-                          title="Click to view full detail modal"
+                          className="hover:bg-slate-800/30 cursor-pointer transition-colors group"
+                          title="Click to view details"
                         >
                           
                           {/* Stock Ticker */}
                           <td className="py-3 px-4 whitespace-nowrap">
-                            <div className="flex items-center gap-1.5 font-mono font-bold text-sm text-white group-hover:text-cyan-400 transition-colors">
+                            <div className="flex items-center gap-1.5 font-mono font-bold text-xs text-slate-100 group-hover:text-cyan-300 transition-colors">
                               <span>{t.symbol}</span>
-                              <span className="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.2 rounded border border-slate-700 font-normal">
+                              <span className="text-[10px] bg-slate-800/50 text-slate-400 px-1.5 py-0.2 rounded font-normal">
                                 {t.exchange || 'NSE'}
                               </span>
                             </div>
@@ -261,31 +255,27 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
 
                           {/* Biases */}
                           <td className="py-3 px-4 whitespace-nowrap">
-                            <div className="flex items-center gap-2">
-                              <span className={`text-[11px] font-semibold ${
-                                t.weeklyBias === 'Bullish' ? 'text-emerald-400' : t.weeklyBias === 'Bearish' ? 'text-rose-400' : 'text-amber-400'
-                              }`}>
+                            <div className="flex items-center gap-2 text-[11px]">
+                              <span className={t.weeklyBias === 'Bullish' ? 'text-emerald-400' : t.weeklyBias === 'Bearish' ? 'text-rose-400' : 'text-amber-400'}>
                                 W: {t.weeklyBias || 'Neutral'}
                               </span>
-                              <span className={`text-[11px] font-semibold ${
-                                t.dailyBias === 'Bullish' ? 'text-emerald-400' : t.dailyBias === 'Bearish' ? 'text-rose-400' : 'text-amber-400'
-                              }`}>
+                              <span className={t.dailyBias === 'Bullish' ? 'text-emerald-400' : t.dailyBias === 'Bearish' ? 'text-rose-400' : 'text-amber-400'}>
                                 D: {t.dailyBias || 'Neutral'}
                               </span>
                             </div>
                           </td>
 
                           {/* Setup Strategy */}
-                          <td className="py-3 px-4 whitespace-nowrap font-medium text-slate-200">
-                            <span className="bg-slate-900 px-2 py-0.5 rounded border border-slate-800 text-xs">
+                          <td className="py-3 px-4 whitespace-nowrap font-medium text-slate-300">
+                            <span className="bg-[#0b0f17] px-2 py-0.5 rounded border border-slate-800 text-[11px]">
                               {t.setupType || 'General'}
                             </span>
                           </td>
 
                           {/* Conviction */}
                           <td className="py-3 px-4 whitespace-nowrap">
-                            <span className={`font-semibold font-mono text-xs ${
-                              t.conviction === 'High' ? 'text-amber-400' : 'text-slate-400'
+                            <span className={`font-mono text-xs ${
+                              t.conviction === 'High' ? 'text-amber-400 font-semibold' : 'text-slate-400'
                             }`}>
                               {t.conviction || 'Medium'}
                             </span>
@@ -302,37 +292,37 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                           <td className="py-3 px-4 whitespace-nowrap">
                             <span className={`px-2 py-0.5 rounded text-[11px] font-medium border ${
                               t.status === 'Executed as Planned'
-                                ? 'bg-emerald-950/80 text-emerald-400 border-emerald-800'
+                                ? 'bg-emerald-950/40 text-emerald-400 border-emerald-900/50'
                                 : t.status === 'Executed with Variation'
-                                ? 'bg-blue-950/80 text-blue-400 border-blue-800'
+                                ? 'bg-blue-950/40 text-blue-400 border-blue-900/50'
                                 : t.status === 'Not Valid Plan'
-                                ? 'bg-amber-950/80 text-amber-400 border-amber-800'
+                                ? 'bg-amber-950/40 text-amber-400 border-amber-900/50'
                                 : t.status === 'Impulse Trade'
-                                ? 'bg-rose-950/80 text-rose-400 border-rose-800'
-                                : 'bg-slate-900 text-slate-400 border-slate-800'
+                                ? 'bg-rose-950/40 text-rose-400 border-rose-900/50'
+                                : 'bg-slate-900/50 text-slate-400 border-slate-800'
                             }`}>
                               {t.status || 'Planned'}
                             </span>
                           </td>
 
                           {/* Outcome */}
-                          <td className="py-3 px-4 whitespace-nowrap font-mono">
-                            <span className={`font-semibold text-xs ${
+                          <td className="py-3 px-4 whitespace-nowrap font-mono text-xs">
+                            <span className={
                               t.outcome === 'Target Hit' || t.outcome === 'Partial Profit'
-                                ? 'text-emerald-400'
+                                ? 'text-emerald-400 font-semibold'
                                 : t.outcome === 'Stop Loss Hit'
-                                ? 'text-rose-400'
+                                ? 'text-rose-400 font-semibold'
                                 : 'text-slate-400'
-                            }`}>
+                            }>
                               {t.outcome || 'Pending'}
                             </span>
                           </td>
 
                           {/* Discipline */}
-                          <td className="py-3 px-4 whitespace-nowrap">
+                          <td className="py-3 px-4 whitespace-nowrap font-mono text-xs">
                             {t.disciplineScore > 0 ? (
-                              <div className="flex items-center gap-1 text-amber-400 font-mono font-bold text-xs">
-                                <Star className="h-3.5 w-3.5 fill-amber-400" />
+                              <div className="flex items-center gap-1 text-amber-400 font-semibold">
+                                <Star className="h-3 w-3 fill-amber-400" />
                                 <span>{t.disciplineScore}.0</span>
                               </div>
                             ) : (
@@ -340,33 +330,33 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                             )}
                           </td>
 
-                          {/* Action Buttons */}
+                          {/* Actions */}
                           <td className="py-3 px-4 whitespace-nowrap text-right">
-                            <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
                               <button
                                 onClick={() => onSelectTrade(t)}
-                                className="p-1.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded border border-slate-800 transition-colors"
+                                className="p-1 text-slate-400 hover:text-slate-200 rounded transition-colors"
                                 title="View Details"
                               >
                                 <Eye className="h-3.5 w-3.5" />
                               </button>
                               <button
                                 onClick={() => onOpenEodReview(t)}
-                                className="p-1.5 bg-slate-800 hover:bg-cyan-950 hover:text-cyan-400 text-slate-300 rounded border border-slate-700 transition-colors"
+                                className="p-1 text-cyan-400 hover:text-cyan-300 rounded transition-colors"
                                 title="Update EOD Review"
                               >
-                                <CheckSquare className="h-3.5 w-3.5 text-cyan-400" />
+                                <CheckSquare className="h-3.5 w-3.5" />
                               </button>
                               <button
                                 onClick={() => onEditPlan(t)}
-                                className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded transition-colors"
+                                className="p-1 text-slate-400 hover:text-slate-200 rounded transition-colors"
                                 title="Edit Plan"
                               >
                                 <Edit3 className="h-3.5 w-3.5" />
                               </button>
                               <button
                                 onClick={() => onDeletePlan(t.id)}
-                                className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded transition-colors"
+                                className="p-1 text-slate-500 hover:text-rose-400 rounded transition-colors"
                                 title="Delete Plan"
                               >
                                 <Trash2 className="h-3.5 w-3.5" />
