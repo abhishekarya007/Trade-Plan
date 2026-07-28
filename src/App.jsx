@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Header from './components/Header';
 import KpiSummary from './components/KpiSummary';
 import JournalTableView from './components/JournalTableView';
+import CalendarView from './components/CalendarView';
 import AnalyticsView from './components/AnalyticsView';
 import TradeFormModal from './components/TradeFormModal';
 import EodReviewModal from './components/EodReviewModal';
@@ -11,7 +12,7 @@ import { PlusCircle, Filter, AlertCircle } from 'lucide-react';
 
 export default function App() {
   const [trades, setTrades] = useState([]);
-  const [activeTab, setActiveTab] = useState('journal'); // 'journal' (Ledger) | 'analytics'
+  const [activeTab, setActiveTab] = useState('journal'); // 'journal' (Ledger) | 'calendar' | 'analytics'
   const [selectedDate, setSelectedDate] = useState('ALL'); // 'ALL' | 'TODAY' | 'YESTERDAY'
   const [searchQuery, setSearchQuery] = useState('');
   const [filterDirection, setFilterDirection] = useState('ALL');
@@ -305,6 +306,13 @@ export default function App() {
             onDuplicatePlan={handleDuplicatePlan}
             onDeletePlan={handleDeletePlan}
             onOpenEodReview={handleOpenEodReview}
+          />
+        )}
+
+        {activeTab === 'calendar' && (
+          <CalendarView
+            trades={trades}
+            onSelectTrade={handleSelectTrade}
           />
         )}
 
