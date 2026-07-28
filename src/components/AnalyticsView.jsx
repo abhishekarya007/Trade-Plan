@@ -1,6 +1,16 @@
 import React from 'react';
-import { BarChart3, PieChart, ShieldAlert, Award, Layers, TrendingUp, Tag, CheckCircle2 } from 'lucide-react';
-import { SETUP_TYPES, EMOTION_TAGS } from '../types/trade';
+import { 
+  BarChart3, 
+  TrendingUp, 
+  TrendingDown, 
+  Zap, 
+  Target, 
+  CheckCircle2, 
+  Tag, 
+  Layers,
+  Compass
+} from 'lucide-react';
+import { SETUP_TYPES, EMOTION_TAGS, EXECUTION_STATUSES } from '../types/trade';
 
 export default function AnalyticsView({ trades }) {
   if (!trades || trades.length === 0) {
@@ -11,7 +21,33 @@ export default function AnalyticsView({ trades }) {
     );
   }
 
-  // 1. Setup Strategy Performance Calculation
+  // Helper for Reviewed Trades with actual outcome
+  const reviewedTrades = trades.filter(t => t.outcome && t.outcome !== 'Pending EOD' && t.outcome !== 'No Trade');
+
+  // 1. Long vs Short Performance
+  const longTrades = reviewedTrades.filter(t => (t.tradeDirection || 'Long') === 'Long');
+  const longWins = longTrades.filter(t => t.outcome === 'Target Hit' || t.outcome === 'Partial Profit');
+  const longWinRate = longTrades.length > 0 ? Math.round((longWins.length / longTrades.length) * 100) : 0;
+
+  const shortTrades = reviewedTrades.filter(t => t.tradeDirection === 'Short');
+  const shortWins = shortTrades.filter(t => t.outcome === 'Target Hit' || t.outcome === 'Partial Profit');
+  const shortWinRate = shortTrades.length > 0 ? Math.round((shortWins.length / shortTrades.length) * 100) : 0;
+
+  // 2. Directional vs Scalping Performance
+  const dirTrades = reviewedTrades.filter(t => (t.tradeStyle || 'Directional') === 'Directional');
+  const dirWins = dirTrades.filter(t => t.outcome === 'Target Hit' || t.outcome === 'Partial Profit');
+  const dirWinRate = dirTrades.length > 0 ? Math.round((dirWins.length / dirTrades.length) * 100) : 0;
+
+  const scalpTrades = reviewedTrades.filter(t => t.tradeStyle === 'Scalping');
+  const scalpWins = scalpTrades.filter(t => t.outcome === 'Target Hit' || t.outcome === 'Partial Profit');
+  const scalpWinRate = scalpTrades.length > 0 ? Math.round((scalpWins.length / scalpTrades.length) * 100) : 0;
+
+  // 3. Weekly + Daily Bias Alignment Success
+  const alignedTrades = reviewedTrades.filter(t => t.weeklyBias === t.dailyBias && t.weeklyBias !== 'Neutral');
+  const alignedWins = alignedTrades.filter(t => t.outcome === 'Target Hit' || t.outcome === 'Partial Profit');
+  const alignedWinRate = alignedTrades.length > 0 ? Math.round((alignedWins.length / alignedTrades.length) * 100) : 0;
+
+  // 4. Setup Strategy Performance
   const setupStats = SETUP_TYPES.map(setup => {
     const setupTrades = trades.filter(t => t.setupType === setup);
     const reviewed = setupTrades.filter(t => t.outcome && t.outcome !== 'Pending EOD' && t.outcome !== 'No Trade');
@@ -25,9 +61,16 @@ export default function AnalyticsView({ trades }) {
       wins: wins.length,
       winRate
     };
-  }).filter(s => s.total > 0).sort((a, b) => b.total - a.total);
+  }).filter(s => s.total > 0).sort((a, b) => b.winRate - a.winRate);
 
-  // 2. Behavioral Tag Frequencies
+  // 5. Execution Status Breakdown
+  const statusCounts = {};
+  trades.forEach(t => {
+    const st = t.status || 'Planned';
+    statusCounts[st] = (statusCounts[st] || 0) + 1;
+  });
+
+  // 6. Behavioral Tag Frequency
   const tagCounts = {};
   trades.forEach(t => {
     if (t.tags && Array.isArray(t.tags)) {
@@ -39,98 +82,112 @@ export default function AnalyticsView({ trades }) {
 
   const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 
-  // 3. Execution Status Distribution
-  const statusCounts = {};
-  trades.forEach(t => {
-    const st = t.status || 'Planned';
-    statusCounts[st] = (statusCounts[st] || 0) + 1;
-  });
-
-  // 4. Bias Alignment Performance
-  const alignedTrades = trades.filter(t => t.weeklyBias === t.dailyBias && t.weeklyBias !== 'Neutral');
-  const alignedWins = alignedTrades.filter(t => t.outcome === 'Target Hit' || t.outcome === 'Partial Profit');
-  const alignedWinRate = alignedTrades.length > 0 ? Math.round((alignedWins.length / alignedTrades.length) * 100) : 0;
-
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       
-      {/* Top Banner KPI highlight */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* Section 1: Performance Highlights Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
         
-        {/* Bias Confluence Win Rate */}
-        <div className="glass-card p-4 border border-cyan-500/30">
-          <div className="flex items-center gap-2 mb-1 text-slate-400 text-xs font-medium">
-            <TrendingUp className="h-4 w-4 text-cyan-400" />
-            <span>Weekly + Daily Bias Alignment</span>
+        {/* Long Win Rate */}
+        <div className="glass-card p-4 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-medium">
+              <span>Long Trades 📈</span>
+              <TrendingUp className="h-4 w-4 text-emerald-400/80" />
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-bold font-mono text-emerald-400">{longWinRate}%</span>
+              <span className="text-[11px] text-slate-500">{longWins.length}/{longTrades.length} wins</span>
+            </div>
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-bold font-mono text-cyan-300">{alignedWinRate}%</span>
-            <span className="text-xs text-slate-400">win rate when W & D match</span>
+          <div className="mt-3 w-full bg-slate-800/60 h-1 rounded-full overflow-hidden">
+            <div className="bg-emerald-400/80 h-full" style={{ width: `${longWinRate}%` }} />
           </div>
-          <p className="text-[11px] text-slate-400 mt-2">
-            {alignedWins.length} wins out of {alignedTrades.length} bias-aligned trades.
-          </p>
         </div>
 
-        {/* Most Frequent Setup */}
-        <div className="glass-card p-4 border border-emerald-500/30">
-          <div className="flex items-center gap-2 mb-1 text-slate-400 text-xs font-medium">
-            <Layers className="h-4 w-4 text-emerald-400" />
-            <span>Top Performing Setup</span>
+        {/* Short Win Rate */}
+        <div className="glass-card p-4 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-medium">
+              <span>Short Trades 📉</span>
+              <TrendingDown className="h-4 w-4 text-rose-400/80" />
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-bold font-mono text-rose-400">{shortWinRate}%</span>
+              <span className="text-[11px] text-slate-500">{shortWins.length}/{shortTrades.length} wins</span>
+            </div>
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold font-mono text-emerald-300">
-              {setupStats.length > 0 ? setupStats[0].name : 'N/A'}
-            </span>
+          <div className="mt-3 w-full bg-slate-800/60 h-1 rounded-full overflow-hidden">
+            <div className="bg-rose-400/80 h-full" style={{ width: `${shortWinRate}%` }} />
           </div>
-          <p className="text-[11px] text-slate-400 mt-2">
-            {setupStats.length > 0 ? `${setupStats[0].winRate}% win rate across ${setupStats[0].total} plans` : 'No setups yet'}
-          </p>
         </div>
 
-        {/* Top Discipline Mindset */}
-        <div className="glass-card p-4 border border-amber-500/30">
-          <div className="flex items-center gap-2 mb-1 text-slate-400 text-xs font-medium">
-            <Award className="h-4 w-4 text-amber-400" />
-            <span>Primary Mindset Tag</span>
+        {/* Directional vs Scalping Ratio */}
+        <div className="glass-card p-4 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-medium">
+              <span>Style Efficiency</span>
+              <Zap className="h-4 w-4 text-amber-400/80" />
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-xl font-bold font-mono text-slate-100">{dirWinRate}% Dir</span>
+              <span className="text-xs text-slate-400 font-mono">/ {scalpWinRate}% Scalp</span>
+            </div>
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-xl font-bold font-mono text-amber-300">
-              {sortedTags.length > 0 ? `#${sortedTags[0][0]}` : 'No tags'}
-            </span>
+          <div className="mt-3 w-full bg-slate-800/60 h-1 rounded-full overflow-hidden flex">
+            <div className="bg-cyan-400/80 h-full" style={{ width: `${dirWinRate}%` }} />
           </div>
-          <p className="text-[11px] text-slate-400 mt-2">
-            {sortedTags.length > 0 ? `Tagged ${sortedTags[0][1]} times in EOD reviews` : 'Tag your trades in EOD review'}
-          </p>
+        </div>
+
+        {/* Bias Alignment Confluence */}
+        <div className="glass-card p-4 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-medium">
+              <span>Bias Confluence</span>
+              <Compass className="h-4 w-4 text-cyan-400/80" />
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-bold font-mono text-cyan-300">{alignedWinRate}%</span>
+              <span className="text-[11px] text-slate-500">when W & D match</span>
+            </div>
+          </div>
+          <div className="mt-3 w-full bg-slate-800/60 h-1 rounded-full overflow-hidden">
+            <div className="bg-cyan-400/80 h-full" style={{ width: `${alignedWinRate}%` }} />
+          </div>
         </div>
 
       </div>
 
-      {/* Main Analytics Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Section 2: Main Breakdown Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         
-        {/* Setup Strategy Performance Table */}
-        <div className="glass-panel p-5 border border-slate-800">
-          <div className="flex items-center gap-2 mb-4">
-            <BarChart3 className="h-4 w-4 text-cyan-400" />
-            <h3 className="text-sm font-bold text-white">Strategy / Setup Win Rate Breakdown</h3>
+        {/* Strategy Win Rate Breakdown */}
+        <div className="glass-panel p-5 border border-slate-800/60">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <BarChart3 className="h-4 w-4 text-cyan-400/80" />
+              <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+                Setup Strategy Performance
+              </h3>
+            </div>
+            <span className="text-[11px] text-slate-500 font-mono">Sorted by Win Rate</span>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3.5">
             {setupStats.map((st) => (
               <div key={st.name} className="space-y-1">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-200">{st.name}</span>
+                  <span className="font-medium text-slate-300">{st.name}</span>
                   <div className="flex items-center gap-2 font-mono">
-                    <span className="text-slate-400 text-[11px]">{st.wins}/{st.reviewed} wins ({st.total} planned)</span>
-                    <span className={`font-bold ${st.winRate >= 50 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    <span className="text-slate-500 text-[11px]">{st.wins}/{st.reviewed} wins</span>
+                    <span className={`font-semibold ${st.winRate >= 50 ? 'text-emerald-400' : 'text-amber-400'}`}>
                       {st.winRate}%
                     </span>
                   </div>
                 </div>
-                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-slate-800/60 h-1.5 rounded-full overflow-hidden">
                   <div 
-                    className={`h-full transition-all duration-500 ${st.winRate >= 50 ? 'bg-emerald-500' : 'bg-amber-500'}`}
+                    className={`h-full transition-all ${st.winRate >= 50 ? 'bg-emerald-400/80' : 'bg-amber-400/80'}`}
                     style={{ width: `${st.winRate}%` }}
                   />
                 </div>
@@ -139,26 +196,41 @@ export default function AnalyticsView({ trades }) {
           </div>
         </div>
 
-        {/* Execution Fidelity Distribution */}
-        <div className="glass-panel p-5 border border-slate-800">
-          <div className="flex items-center gap-2 mb-4">
-            <CheckCircle2 className="h-4 w-4 text-blue-400" />
-            <h3 className="text-sm font-bold text-white">Plan Execution Fidelity Audit</h3>
+        {/* Execution Fidelity Audit */}
+        <div className="glass-panel p-5 border border-slate-800/60">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 text-blue-400/80" />
+              <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+                Execution Status Distribution
+              </h3>
+            </div>
+            <span className="text-[11px] text-slate-500 font-mono">{trades.length} Total Plans</span>
           </div>
 
-          <div className="space-y-3">
-            {Object.entries(statusCounts).map(([statusName, count]) => {
-              const percentage = Math.round((count / trades.length) * 100);
+          <div className="space-y-2.5">
+            {EXECUTION_STATUSES.map((statusName) => {
+              const count = statusCounts[statusName] || 0;
+              const percentage = trades.length > 0 ? Math.round((count / trades.length) * 100) : 0;
+              
+              if (count === 0) return null;
+
               return (
-                <div key={statusName} className="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80">
-                  <div className="flex items-center justify-between text-xs mb-1.5">
-                    <span className="font-semibold text-slate-300">{statusName}</span>
-                    <span className="font-mono font-bold text-cyan-400">{count} ({percentage}%)</span>
+                <div key={statusName} className="p-2.5 bg-[#0c101a] rounded-xl border border-slate-800/60">
+                  <div className="flex items-center justify-between text-xs mb-1">
+                    <span className="font-medium text-slate-300">{statusName}</span>
+                    <span className="font-mono font-semibold text-slate-400">{count} ({percentage}%)</span>
                   </div>
-                  <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-800/60 h-1.5 rounded-full overflow-hidden">
                     <div 
-                      className={`h-full transition-all duration-500 ${
-                        statusName === 'Executed as Planned' ? 'bg-emerald-500' : statusName === 'Impulse Trade' ? 'bg-rose-500' : 'bg-blue-500'
+                      className={`h-full transition-all ${
+                        statusName === 'Executed as Planned' 
+                          ? 'bg-emerald-400/80' 
+                          : statusName === 'Impulse Trade' 
+                          ? 'bg-rose-400/80' 
+                          : statusName === 'Not Valid Plan'
+                          ? 'bg-amber-400/80'
+                          : 'bg-blue-400/80'
                       }`}
                       style={{ width: `${percentage}%` }}
                     />
@@ -171,24 +243,26 @@ export default function AnalyticsView({ trades }) {
 
       </div>
 
-      {/* Behavioral & Psychology Tag Cloud */}
-      <div className="glass-panel p-5 border border-slate-800">
+      {/* Section 3: Psychology & Mindset Tag Frequency */}
+      <div className="glass-panel p-5 border border-slate-800/60">
         <div className="flex items-center gap-2 mb-3">
-          <Tag className="h-4 w-4 text-amber-400" />
-          <h3 className="text-sm font-bold text-white">Psychology & Discipline Tag Frequency</h3>
+          <Tag className="h-4 w-4 text-amber-400/80" />
+          <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+            Behavioral Tag Frequency
+          </h3>
         </div>
 
         {sortedTags.length === 0 ? (
-          <p className="text-xs text-slate-500">No behavioral tags recorded yet. Select tags during your End-of-Day review!</p>
+          <p className="text-xs text-slate-500">No behavioral tags recorded yet. Tag your trades during End-of-Day review!</p>
         ) : (
-          <div className="flex flex-wrap gap-2 pt-2">
+          <div className="flex flex-wrap gap-2 pt-1">
             {sortedTags.map(([tagName, count]) => (
               <div 
                 key={tagName}
-                className="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl text-xs"
+                className="flex items-center gap-2 bg-[#0c101a] border border-slate-800/80 px-3 py-1 rounded-lg text-xs"
               >
-                <span className="text-cyan-300 font-medium">#{tagName}</span>
-                <span className="bg-slate-800 font-mono text-[10px] font-bold text-slate-300 px-1.5 py-0.5 rounded-md">
+                <span className="text-cyan-300/90 font-medium">#{tagName}</span>
+                <span className="bg-slate-800 font-mono text-[10px] text-slate-400 px-1.5 py-0.2 rounded">
                   {count}
                 </span>
               </div>
