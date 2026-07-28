@@ -26,6 +26,7 @@ export const EXECUTION_STATUSES = [
   'Executed as Planned',
   'Executed with Variation',
   'Valid Plan - Not Executed',
+  'Not Valid Plan',
   'Setup Didn\'t Trigger',
   'Impulse Trade'
 ];

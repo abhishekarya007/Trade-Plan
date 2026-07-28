@@ -54,6 +54,8 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
         return <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5" /> Executed with Variation</span>;
       case 'Valid Plan - Not Executed':
         return <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-purple-500/10 text-purple-300 border border-purple-500/30 flex items-center gap-1.5"><AlertTriangle className="h-3.5 w-3.5" /> Plan Valid - Not Executed</span>;
+      case 'Not Valid Plan':
+        return <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30 flex items-center gap-1.5"><AlertTriangle className="h-3.5 w-3.5" /> Not Valid Plan</span>;
       case 'Setup Didn\'t Trigger':
         return <span className="px-3 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 border border-slate-700">Setup Didn't Trigger</span>;
       case 'Impulse Trade':

@@ -216,6 +216,7 @@ export default function App() {
               <option value="Executed as Planned">Executed as Planned</option>
               <option value="Executed with Variation">Executed with Variation</option>
               <option value="Valid Plan - Not Executed">Valid Plan - Not Executed</option>
+              <option value="Not Valid Plan">Not Valid Plan</option>
               <option value="Setup Didn't Trigger">Setup Didn't Trigger</option>
               <option value="Impulse Trade">Impulse Trade</option>
             </select>
