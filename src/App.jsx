@@ -7,8 +7,11 @@ import AnalyticsView from './components/AnalyticsView';
 import TradeFormModal from './components/TradeFormModal';
 import EodReviewModal from './components/EodReviewModal';
 import TradeDetailModal from './components/TradeDetailModal';
+import ConfirmModal from './components/ConfirmModal';
+import { ToastContainer } from './components/Toast';
+import { playSuccessSound, playDeleteSound, playInfoSound } from './utils/sound';
 import { getStoredTrades, saveStoredTrades, resetToDemoData } from './utils/storage';
-import { PlusCircle, Filter, AlertCircle } from 'lucide-react';
+import { PlusCircle, Filter } from 'lucide-react';
 
 export default function App() {
   const [trades, setTrades] = useState([]);
@@ -21,33 +24,46 @@ export default function App() {
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [filterOutcome, setFilterOutcome] = useState('ALL');
 
-  // Modal States
+  // Modals state
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
-  const [isEodModalOpen, setIsEodModalOpen] = useState(false);
-  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  
   const [editingPlan, setEditingPlan] = useState(null);
+  const [isEodModalOpen, setIsEodModalOpen] = useState(false);
   const [eodTargetTrade, setEodTargetTrade] = useState(null);
   const [selectedTradeDetail, setSelectedTradeDetail] = useState(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  // Initial Data Load
+  // Toast Notifications State
+  const [toasts, setToasts] = useState([]);
+
+  // Confirm Modal State
+  const [confirmConfig, setConfirmConfig] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: () => {},
+    confirmText: 'Confirm',
+    confirmVariant: 'danger'
+  });
+
+  const addToast = (type, title, message) => {
+    const newToast = { id: Date.now() + Math.random(), type, title, message };
+    setToasts(prev => [...prev, newToast]);
+  };
+
+  const removeToast = (id) => {
+    setToasts(prev => prev.filter(t => t.id !== id));
+  };
+
+  // Load trades on mount
   useEffect(() => {
     const data = getStoredTrades();
     setTrades(data);
   }, []);
 
-  // Save changes to LocalStorage
+  // Sync trades to storage
   const updateTradesState = (newTrades) => {
     setTrades(newTrades);
     saveStoredTrades(newTrades);
-
-    // If detail modal is open for a trade that was updated, refresh detail modal data
-    if (selectedTradeDetail) {
-      const refreshed = newTrades.find(t => t.id === selectedTradeDetail.id);
-      if (refreshed) {
-        setSelectedTradeDetail(refreshed);
-      }
-    }
   };
 
   // Pre-Market Plan Add or Edit
@@ -56,18 +72,21 @@ export default function App() {
       // Edit existing plan
       const updated = trades.map(t => t.id === editingPlan.id ? { ...t, ...planData } : t);
       updateTradesState(updated);
+      playInfoSound();
+      addToast('info', 'Plan Updated', `${planData.symbol} trade plan updated.`);
     } else {
       // Add new plan
       const newPlan = {
         id: `trade-${Date.now()}`,
         status: 'Planned',
         outcome: 'Pending EOD',
-        disciplineScore: 0,
         tags: [],
         eodNotes: '',
         ...planData
       };
       updateTradesState([newPlan, ...trades]);
+      playSuccessSound();
+      addToast('success', 'Plan Created', `New trade plan for ${planData.symbol} added.`);
     }
     setEditingPlan(null);
   };
@@ -85,39 +104,56 @@ export default function App() {
       planRationale: `[Clone of ${tradeToClone.symbol}] ${tradeToClone.planRationale || ''}`
     };
     updateTradesState([clonedPlan, ...trades]);
+    playSuccessSound();
+    addToast('success', 'Plan Cloned', `Cloned ${tradeToClone.symbol} setup for today.`);
   };
 
   // EOD Review Save
   const handleSaveEodReview = (tradeId, reviewData) => {
     const updated = trades.map(t => t.id === tradeId ? { ...t, ...reviewData } : t);
     updateTradesState(updated);
+    playSuccessSound();
+    addToast('success', 'EOD Audit Saved', `End-of-day review saved.`);
   };
 
-  // Delete Plan
+  // Delete Plan with Confirmation Popup
   const handleDeletePlan = (tradeId) => {
-    const updated = trades.filter(t => t.id !== tradeId);
-    updateTradesState(updated);
-    if (selectedTradeDetail && selectedTradeDetail.id === tradeId) {
-      setIsDetailModalOpen(false);
-      setSelectedTradeDetail(null);
-    }
+    const targetTrade = trades.find(t => t.id === tradeId);
+    const symbolLabel = targetTrade ? targetTrade.symbol : 'this trade plan';
+
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Delete Trade Plan?',
+      message: `Are you sure you want to delete ${symbolLabel}? This action cannot be undone.`,
+      confirmText: 'Delete Plan',
+      confirmVariant: 'danger',
+      onConfirm: () => {
+        const updated = trades.filter(t => t.id !== tradeId);
+        updateTradesState(updated);
+        playDeleteSound();
+        addToast('delete', 'Plan Deleted', `${symbolLabel} removed from ledger.`);
+      }
+    });
   };
 
-  // Reset to Demo Data
+  // Reset Data to Demo with Confirmation Popup
   const handleResetData = () => {
-    if (window.confirm('Reset all trade plans back to demo sample data?')) {
-      const freshData = resetToDemoData();
-      setTrades(freshData);
-    }
+    setConfirmConfig({
+      isOpen: true,
+      title: 'Reset to Demo Data?',
+      message: 'This will replace all your current trade plans with realistic demo trades. Continue?',
+      confirmText: 'Reset All Data',
+      confirmVariant: 'danger',
+      onConfirm: () => {
+        const resetData = resetToDemoData();
+        setTrades(resetData);
+        playDeleteSound();
+        addToast('info', 'Data Reset', 'Restored initial sample trade plans.');
+      }
+    });
   };
 
-  // Row Select -> Open Detail Modal
-  const handleSelectTrade = (trade) => {
-    setSelectedTradeDetail(trade);
-    setIsDetailModalOpen(true);
-  };
-
-  // Open Handlers
+  // Modal Handlers
   const handleOpenNewPlan = () => {
     setEditingPlan(null);
     setIsFormModalOpen(true);
@@ -134,33 +170,38 @@ export default function App() {
   };
 
   const handleBatchEodOpen = () => {
-    const pending = trades.find(t => t.outcome === 'Pending EOD' || t.status === 'Planned');
-    if (pending) {
-      handleOpenEodReview(pending);
+    const unreviewed = trades.find(t => t.status === 'Planned');
+    if (unreviewed) {
+      handleOpenEodReview(unreviewed);
     } else if (trades.length > 0) {
       handleOpenEodReview(trades[0]);
     } else {
-      handleOpenNewPlan();
+      addToast('info', 'No Trades', 'Create a trade plan first to audit!');
     }
   };
 
-  // Filtering Logic
+  const handleSelectTrade = (trade) => {
+    setSelectedTradeDetail(trade);
+    setIsDetailModalOpen(true);
+  };
+
+  // Filter Trades Logic
   const filteredTrades = useMemo(() => {
     const todayStr = new Date().toISOString().split('T')[0];
     const yesterdayStr = new Date(Date.now() - 86400000).toISOString().split('T')[0];
 
-    return trades.filter(t => {
+    return trades.filter((t) => {
       // Date filter
       if (selectedDate === 'TODAY' && t.date !== todayStr) return false;
       if (selectedDate === 'YESTERDAY' && t.date !== yesterdayStr) return false;
 
-      // Search query (Symbol or Setup Type or Rationale)
+      // Search Query
       if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase();
-        const matchesSymbol = (t.symbol || '').toLowerCase().includes(q);
-        const matchesSetup = (t.setupType || '').toLowerCase().includes(q);
-        const matchesRationale = (t.planRationale || '').toLowerCase().includes(q);
-        if (!matchesSymbol && !matchesSetup && !matchesRationale) return false;
+        const query = searchQuery.toLowerCase();
+        const matchesSymbol = t.symbol.toLowerCase().includes(query);
+        const matchesStrategy = (t.setupType || '').toLowerCase().includes(query);
+        const matchesRationale = (t.planRationale || '').toLowerCase().includes(query);
+        if (!matchesSymbol && !matchesStrategy && !matchesRationale) return false;
       }
 
       // Direction filter
@@ -200,6 +241,7 @@ export default function App() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         onResetData={handleResetData}
+        addToast={addToast}
       />
 
       {/* Main Content Area */}
@@ -249,49 +291,28 @@ export default function App() {
                 <option value="ALL">All Biases</option>
                 <option value="Bullish">Bullish 🟢</option>
                 <option value="Bearish">Bearish 🔴</option>
-                <option value="Neutral">Neutral 🟡</option>
+                <option value="Neutral">Neutral / Range 🟡</option>
               </select>
 
-              {/* Status Filter */}
+              {/* Execution Status Filter */}
               <select
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
                 className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer"
               >
                 <option value="ALL">All Execution Statuses</option>
-                <option value="Planned">Planned (Pending)</option>
+                <option value="Planned">Planned</option>
                 <option value="Executed as Planned">Executed as Planned</option>
                 <option value="Executed with Variation">Executed with Variation</option>
                 <option value="Valid Plan - Not Executed">Valid Plan - Not Executed</option>
                 <option value="Not Valid Plan">Not Valid Plan</option>
-                <option value="Setup Didn't Trigger">Setup Didn't Trigger</option>
                 <option value="Impulse Trade">Impulse Trade</option>
-              </select>
-
-              {/* Outcome Filter */}
-              <select
-                value={filterOutcome}
-                onChange={(e) => setFilterOutcome(e.target.value)}
-                className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer"
-              >
-                <option value="ALL">All Outcomes</option>
-                <option value="Pending EOD">Pending EOD</option>
-                <option value="Target Hit">Target Hit 🎯</option>
-                <option value="Partial Profit">Partial Profit ✨</option>
-                <option value="Stop Loss Hit">Stop Loss Hit 🛑</option>
-                <option value="Breakeven">Breakeven ⚖️</option>
-                <option value="No Trade">No Trade</option>
               </select>
             </div>
 
-            {/* Result Count & Tip */}
-            <div className="flex items-center gap-3">
-              <span className="text-slate-500 text-[11px] hidden sm:inline italic">
-                💡 Tip: Click any row to view full strategy details
-              </span>
-              <div className="text-slate-400 font-mono text-[11px] px-2 py-1 bg-slate-900 rounded-md border border-slate-800">
-                Showing <span className="font-bold text-white">{filteredTrades.length}</span> of {trades.length} plans
-              </div>
+            {/* Total Filtered Count */}
+            <div className="text-slate-500 font-mono text-[11px]">
+              Showing {filteredTrades.length} of {trades.length} plans
             </div>
 
           </div>
@@ -353,6 +374,20 @@ export default function App() {
         onOpenEodReview={handleOpenEodReview}
         onDeletePlan={handleDeletePlan}
       />
+
+      {/* Global Confirmation Modal */}
+      <ConfirmModal
+        isOpen={confirmConfig.isOpen}
+        onClose={() => setConfirmConfig(prev => ({ ...prev, isOpen: false }))}
+        onConfirm={confirmConfig.onConfirm}
+        title={confirmConfig.title}
+        message={confirmConfig.message}
+        confirmText={confirmConfig.confirmText}
+        confirmVariant={confirmConfig.confirmVariant}
+      />
+
+      {/* Floating Toast Notifications */}
+      <ToastContainer toasts={toasts} onClose={removeToast} />
 
     </div>
   );

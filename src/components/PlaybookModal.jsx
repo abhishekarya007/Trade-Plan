@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, ShieldCheck, Plus, Trash2, Save, Sparkles } from 'lucide-react';
+import { playSuccessSound, playDeleteSound, playInfoSound } from '../utils/sound';
 
 const DEFAULT_PLAYBOOK_RULES = [
   'Never trade in the first 5 minutes of market opening.',
@@ -42,18 +43,19 @@ export default function PlaybookModal({ isOpen, onClose }) {
     if (!newRuleText.trim()) return;
     const updated = [...rules, newRuleText.trim()];
     saveRules(updated);
+    playSuccessSound();
     setNewRuleText('');
   };
 
   const handleDeleteRule = (index) => {
     const updated = rules.filter((_, i) => i !== index);
     saveRules(updated);
+    playDeleteSound();
   };
 
   const handleResetRules = () => {
-    if (window.confirm('Reset playbook to default trading rules?')) {
-      saveRules(DEFAULT_PLAYBOOK_RULES);
-    }
+    saveRules(DEFAULT_PLAYBOOK_RULES);
+    playInfoSound();
   };
 
   return (

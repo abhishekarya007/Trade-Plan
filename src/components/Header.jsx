@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import PlaybookModal from './PlaybookModal';
 import { exportTradesToJSON, exportTradesToCSV } from '../utils/storage';
+import { playSuccessSound, playInfoSound } from '../utils/sound';
 
 export default function Header({
   activeTab,
@@ -26,10 +27,23 @@ export default function Header({
   setSelectedDate,
   searchQuery,
   setSearchQuery,
-  onResetData
+  onResetData,
+  addToast
 }) {
   const fileInputRef = useRef(null);
   const [isPlaybookOpen, setIsPlaybookOpen] = useState(false);
+
+  const handleExportJSON = () => {
+    exportTradesToJSON(trades);
+    playInfoSound();
+    if (addToast) addToast('info', 'JSON Exported', 'Downloaded trade plan data JSON.');
+  };
+
+  const handleExportCSV = () => {
+    exportTradesToCSV(trades);
+    playInfoSound();
+    if (addToast) addToast('info', 'CSV Exported', 'Downloaded trade plan spreadsheet CSV.');
+  };
 
   const handleImportJSON = (e) => {
     const file = e.target.files[0];
@@ -41,12 +55,13 @@ export default function Header({
         const importedData = JSON.parse(event.target.result);
         if (Array.isArray(importedData)) {
           setTrades(importedData);
-          alert(`Successfully imported ${importedData.length} trade plans!`);
+          playSuccessSound();
+          if (addToast) addToast('success', 'Data Imported', `Successfully loaded ${importedData.length} trade plans!`);
         } else {
-          alert('Invalid JSON file format. Expected an array of trade plans.');
+          if (addToast) addToast('danger', 'Import Failed', 'Invalid JSON format. Expected an array of trades.');
         }
       } catch (err) {
-        alert('Failed to parse JSON file.');
+        if (addToast) addToast('danger', 'Import Error', 'Failed to parse JSON file.');
       }
     };
     reader.readAsText(file);
@@ -170,7 +185,7 @@ export default function Header({
               {/* Import / Export Utility Bar */}
               <div className="flex items-center gap-0.5 bg-[#111622] p-1 rounded-xl border border-slate-800">
                 <button
-                  onClick={() => exportTradesToJSON(trades)}
+                  onClick={handleExportJSON}
                   className="p-1 text-slate-400 hover:text-slate-200 rounded transition-colors"
                   title="Export JSON"
                 >
@@ -178,7 +193,7 @@ export default function Header({
                 </button>
 
                 <button
-                  onClick={() => exportTradesToCSV(trades)}
+                  onClick={handleExportCSV}
                   className="p-1 text-slate-400 hover:text-emerald-300 rounded transition-colors text-xs font-mono font-bold"
                   title="Export CSV"
                 >

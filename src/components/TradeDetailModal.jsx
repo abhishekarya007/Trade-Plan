@@ -133,10 +133,8 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
 
             <button
               onClick={() => {
-                if (window.confirm('Are you sure you want to delete this trade plan?')) {
-                  onClose();
-                  onDeletePlan(trade.id);
-                }
+                onClose();
+                onDeletePlan(trade.id);
               }}
               className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition-colors"
               title="Delete Trade Plan"
