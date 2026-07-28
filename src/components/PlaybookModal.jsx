@@ -3,10 +3,13 @@ import { X, ShieldCheck, Plus, Trash2, Save, Sparkles } from 'lucide-react';
 import { playSuccessSound, playDeleteSound, playInfoSound } from '../utils/sound';
 
 const DEFAULT_PLAYBOOK_RULES = [
-  'Never trade in the first 5 minutes of market opening.',
-  'Always wait for 15-minute candle closure confirmation before entering.',
   'Max 2 trades per day. Stop trading if daily loss limit is hit.',
   'Never move stop loss once trade is active.',
+  'Always Trail or book partials',
+  'No plan No Trade',
+  'Max 4 stocks plan per day',
+  '5 good trades monthly are enough',
+  'Always wait for 5-minute candle closure confirmation before entering.',
   'Verify Weekly and Daily bias alignment before taking high-conviction trades.',
   'No impulse or revenge trades during choppy rangebound market conditions.'
 ];
@@ -59,15 +62,15 @@ export default function PlaybookModal({ isOpen, onClose }) {
   };
 
   return (
-    <div 
+    <div
       onClick={onClose}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md overflow-y-auto"
     >
-      <div 
+      <div
         onClick={(e) => e.stopPropagation()}
         className="bg-[#111622] w-full max-w-xl overflow-hidden border border-slate-800/80 rounded-2xl shadow-xl animate-in fade-in zoom-in duration-200"
       >
-        
+
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-slate-800/60 bg-[#0e131f]/80">
           <div className="flex items-center gap-2.5">
@@ -90,11 +93,11 @@ export default function PlaybookModal({ isOpen, onClose }) {
 
         {/* Body */}
         <div className="p-5 space-y-4 max-h-[70vh] overflow-y-auto">
-          
+
           {/* Rules List */}
           <div className="space-y-2">
             {rules.map((rule, idx) => (
-              <div 
+              <div
                 key={idx}
                 className="flex items-start justify-between gap-3 p-3 bg-[#0c101a] rounded-xl border border-slate-800/80 group"
               >
