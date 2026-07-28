@@ -6,6 +6,7 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
   const [formData, setFormData] = useState({
     symbol: '',
     exchange: 'NSE',
+    tradeDirection: 'Long',
     date: new Date().toISOString().split('T')[0],
     weeklyBias: BIAS_TYPES.BULLISH,
     dailyBias: BIAS_TYPES.BULLISH,
@@ -19,6 +20,7 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
       setFormData({
         symbol: initialData.symbol || '',
         exchange: initialData.exchange || 'NSE',
+        tradeDirection: initialData.tradeDirection || 'Long',
         date: initialData.date || new Date().toISOString().split('T')[0],
         weeklyBias: initialData.weeklyBias || BIAS_TYPES.BULLISH,
         dailyBias: initialData.dailyBias || BIAS_TYPES.BULLISH,
@@ -30,6 +32,7 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
       setFormData({
         symbol: '',
         exchange: 'NSE',
+        tradeDirection: 'Long',
         date: new Date().toISOString().split('T')[0],
         weeklyBias: BIAS_TYPES.BULLISH,
         dailyBias: BIAS_TYPES.BULLISH,
@@ -81,8 +84,8 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           
-          {/* Symbol, Exchange, Date */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {/* Symbol, Direction, Exchange, Date */}
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
             
             <div>
               <label className="block text-xs font-medium text-slate-300 mb-1">
@@ -96,6 +99,36 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
                 onChange={(e) => setFormData({ ...formData, symbol: e.target.value.toUpperCase() })}
                 className="glass-input w-full font-mono uppercase font-bold text-cyan-300"
               />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-slate-300 mb-1">
+                Direction
+              </label>
+              <div className="grid grid-cols-2 gap-1">
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, tradeDirection: 'Long' })}
+                  className={`py-1.5 px-2 rounded-lg text-xs font-semibold border transition-all ${
+                    formData.tradeDirection === 'Long'
+                      ? 'bg-emerald-950/60 text-emerald-400 border-emerald-800'
+                      : 'bg-[#0c101a] text-slate-400 border-slate-800'
+                  }`}
+                >
+                  📈 Long
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, tradeDirection: 'Short' })}
+                  className={`py-1.5 px-2 rounded-lg text-xs font-semibold border transition-all ${
+                    formData.tradeDirection === 'Short'
+                      ? 'bg-rose-950/60 text-rose-400 border-rose-800'
+                      : 'bg-[#0c101a] text-slate-400 border-slate-800'
+                  }`}
+                >
+                  📉 Short
+                </button>
+              </div>
             </div>
 
             <div>

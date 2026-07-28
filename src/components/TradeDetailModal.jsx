@@ -159,8 +159,16 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
               </div>
             </div>
 
-            {/* Biases */}
+            {/* Biases & Direction */}
             <div className="flex flex-wrap gap-2 pt-0.5">
+              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold uppercase font-mono border ${
+                trade.tradeDirection === 'Short'
+                  ? 'bg-rose-950/40 text-rose-400 border-rose-900/40'
+                  : 'bg-emerald-950/40 text-emerald-400 border-emerald-900/40'
+              }`}>
+                {trade.tradeDirection === 'Short' ? '📉 Short' : '📈 Long'}
+              </span>
+
               {getBiasBadge(trade.weeklyBias, 'Weekly')}
               {getBiasBadge(trade.dailyBias, 'Daily')}
               

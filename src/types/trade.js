@@ -1,3 +1,8 @@
+export const DIRECTION_TYPES = {
+  LONG: 'Long',
+  SHORT: 'Short'
+};
+
 export const BIAS_TYPES = {
   BULLISH: 'Bullish',
   BEARISH: 'Bearish',
@@ -57,6 +62,7 @@ export const SAMPLE_TRADES = [
     date: new Date().toISOString().split('T')[0],
     symbol: 'RELIANCE',
     exchange: 'NSE',
+    tradeDirection: 'Long',
     weeklyBias: 'Bullish',
     dailyBias: 'Bullish',
     setupType: 'Breakout',
@@ -73,6 +79,7 @@ export const SAMPLE_TRADES = [
     date: new Date().toISOString().split('T')[0],
     symbol: 'TCS',
     exchange: 'NSE',
+    tradeDirection: 'Short',
     weeklyBias: 'Bearish',
     dailyBias: 'Bearish',
     setupType: 'Resistance Short',
@@ -89,6 +96,7 @@ export const SAMPLE_TRADES = [
     date: new Date().toISOString().split('T')[0],
     symbol: 'NVDA',
     exchange: 'NASDAQ',
+    tradeDirection: 'Long',
     weeklyBias: 'Bullish',
     dailyBias: 'Rangebound',
     setupType: 'VWAP Pullback',
@@ -105,6 +113,7 @@ export const SAMPLE_TRADES = [
     date: new Date(Date.now() - 86400000).toISOString().split('T')[0], // Yesterday
     symbol: 'INFY',
     exchange: 'NSE',
+    tradeDirection: 'Long',
     weeklyBias: 'Neutral',
     dailyBias: 'Bullish',
     setupType: 'Support Bounce',
@@ -121,6 +130,7 @@ export const SAMPLE_TRADES = [
     date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
     symbol: 'TATAMOTORS',
     exchange: 'NSE',
+    tradeDirection: 'Long',
     weeklyBias: 'Bullish',
     dailyBias: 'Bullish',
     setupType: 'Liquidity Sweep',
@@ -130,13 +140,14 @@ export const SAMPLE_TRADES = [
     outcome: 'No Trade',
     disciplineScore: 2,
     tags: ['Hesitation / Missed Entry'],
-    eodNotes: 'Price touched sweep level perfectly, but hesitated to take the entry due to market noise. Plan would have hit full target.'
+    eodNotes: 'Price touched sweep level perfectly, but hesitated to take the entry due to market noise.'
   },
   {
     id: 'trade-106',
     date: new Date(Date.now() - 172800000).toISOString().split('T')[0], // 2 days ago
     symbol: 'AAPL',
     exchange: 'NASDAQ',
+    tradeDirection: 'Short',
     weeklyBias: 'Bearish',
     dailyBias: 'Bearish',
     setupType: 'Trend Continuation',

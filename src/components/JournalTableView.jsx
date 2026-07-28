@@ -207,6 +207,7 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                     <thead className="bg-[#0e131f]/90 text-slate-400 font-medium border-b border-slate-800/40 uppercase tracking-wider text-[10px]">
                       <tr>
                         <th className="py-2.5 px-4">Stock</th>
+                        <th className="py-2.5 px-4">Dir</th>
                         <th className="py-2.5 px-4">Biases (W/D)</th>
                         <th className="py-2.5 px-4">Setup Strategy</th>
                         <th className="py-2.5 px-4">Conviction</th>
@@ -235,6 +236,17 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                                 {t.exchange || 'NSE'}
                               </span>
                             </div>
+                          </td>
+
+                          {/* Direction */}
+                          <td className="py-3 px-4 whitespace-nowrap font-mono text-xs">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase border ${
+                              t.tradeDirection === 'Short'
+                                ? 'bg-rose-950/60 text-rose-400 border-rose-900/60'
+                                : 'bg-emerald-950/60 text-emerald-400 border-emerald-900/60'
+                            }`}>
+                              {t.tradeDirection === 'Short' ? '📉 Short' : '📈 Long'}
+                            </span>
                           </td>
 
                           {/* Biases */}

@@ -70,7 +70,11 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
         {/* Pre-Market Banner */}
         <div className="mx-5 mt-4 p-3 bg-[#0c101a] rounded-xl border border-slate-800/80 text-xs">
           <div className="flex items-center justify-between text-slate-400 mb-1">
-            <span className="font-medium text-slate-300">Pre-Market Plan:</span>
+            <span className="font-medium text-slate-300">
+              Pre-Market Plan: <strong className={trade.tradeDirection === 'Short' ? 'text-rose-400 font-mono' : 'text-emerald-400 font-mono'}>
+                {trade.tradeDirection === 'Short' ? '📉 SHORT' : '📈 LONG'}
+              </strong>
+            </span>
             <span>{trade.setupType} • {trade.weeklyBias}/{trade.dailyBias}</span>
           </div>
           <p className="text-slate-400 italic line-clamp-2">

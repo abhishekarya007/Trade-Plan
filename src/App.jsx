@@ -14,6 +14,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('journal'); // 'journal' (Ledger) | 'analytics'
   const [selectedDate, setSelectedDate] = useState('ALL'); // 'ALL' | 'TODAY' | 'YESTERDAY'
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterDirection, setFilterDirection] = useState('ALL');
   const [filterBias, setFilterBias] = useState('ALL');
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [filterOutcome, setFilterOutcome] = useState('ALL');
@@ -145,6 +146,9 @@ export default function App() {
         if (!matchesSymbol && !matchesSetup && !matchesRationale) return false;
       }
 
+      // Direction filter
+      if (filterDirection !== 'ALL' && t.tradeDirection !== filterDirection) return false;
+
       // Bias filter
       if (filterBias !== 'ALL') {
         if (t.weeklyBias !== filterBias && t.dailyBias !== filterBias) return false;
@@ -158,7 +162,7 @@ export default function App() {
 
       return true;
     });
-  }, [trades, selectedDate, searchQuery, filterBias, filterStatus, filterOutcome]);
+  }, [trades, selectedDate, searchQuery, filterDirection, filterBias, filterStatus, filterOutcome]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -193,6 +197,17 @@ export default function App() {
                 <Filter className="h-3.5 w-3.5 text-cyan-400" />
                 <span>Filters:</span>
               </div>
+
+              {/* Direction Filter */}
+              <select
+                value={filterDirection}
+                onChange={(e) => setFilterDirection(e.target.value)}
+                className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer"
+              >
+                <option value="ALL">All Directions</option>
+                <option value="Long">Long 📈</option>
+                <option value="Short">Short 📉</option>
+              </select>
 
               {/* Bias Filter */}
               <select
