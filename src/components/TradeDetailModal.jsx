@@ -159,7 +159,7 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
               </div>
             </div>
 
-            {/* Biases & Direction */}
+            {/* Biases, Direction & Style */}
             <div className="flex flex-wrap gap-2 pt-0.5">
               <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold uppercase font-mono border ${
                 trade.tradeDirection === 'Short'
@@ -167,6 +167,14 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
                   : 'bg-emerald-950/40 text-emerald-400 border-emerald-900/40'
               }`}>
                 {trade.tradeDirection === 'Short' ? '📉 Short' : '📈 Long'}
+              </span>
+
+              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold font-mono border ${
+                trade.tradeStyle === 'Scalping'
+                  ? 'bg-amber-950/40 text-amber-300 border-amber-900/40'
+                  : 'bg-slate-900 text-slate-300 border-slate-800'
+              }`}>
+                {trade.tradeStyle === 'Scalping' ? '⚡ Scalping' : '🎯 Directional'}
               </span>
 
               {getBiasBadge(trade.weeklyBias, 'Weekly')}

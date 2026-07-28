@@ -7,6 +7,7 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
     symbol: '',
     exchange: 'NSE',
     tradeDirection: 'Long',
+    tradeStyle: 'Directional',
     date: new Date().toISOString().split('T')[0],
     weeklyBias: BIAS_TYPES.BULLISH,
     dailyBias: BIAS_TYPES.BULLISH,
@@ -21,6 +22,7 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
         symbol: initialData.symbol || '',
         exchange: initialData.exchange || 'NSE',
         tradeDirection: initialData.tradeDirection || 'Long',
+        tradeStyle: initialData.tradeStyle || 'Directional',
         date: initialData.date || new Date().toISOString().split('T')[0],
         weeklyBias: initialData.weeklyBias || BIAS_TYPES.BULLISH,
         dailyBias: initialData.dailyBias || BIAS_TYPES.BULLISH,
@@ -33,6 +35,7 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
         symbol: '',
         exchange: 'NSE',
         tradeDirection: 'Long',
+        tradeStyle: 'Directional',
         date: new Date().toISOString().split('T')[0],
         weeklyBias: BIAS_TYPES.BULLISH,
         dailyBias: BIAS_TYPES.BULLISH,
@@ -57,7 +60,7 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md overflow-y-auto">
-      <div className="bg-[#111622] w-full max-w-lg overflow-hidden border border-slate-800/80 rounded-2xl shadow-xl animate-in fade-in zoom-in duration-200">
+      <div className="bg-[#111622] w-full max-w-xl overflow-hidden border border-slate-800/80 rounded-2xl shadow-xl animate-in fade-in zoom-in duration-200">
         
         {/* Modal Header */}
         <div className="flex items-center justify-between p-4 border-b border-slate-800/60 bg-[#0e131f]/80">
@@ -69,7 +72,7 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
               <h2 className="text-sm font-bold text-slate-100">
                 {initialData ? 'Edit Trade Plan' : 'New Pre-Market Trade Plan'}
               </h2>
-              <p className="text-[11px] text-slate-400">Stock bias, setup strategy & rationale</p>
+              <p className="text-[11px] text-slate-400">Stock direction, style, strategy & rationale</p>
             </div>
           </div>
 
@@ -84,8 +87,8 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="p-5 space-y-4">
           
-          {/* Symbol, Direction, Exchange, Date */}
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
+          {/* Row 1: Symbol & Direction */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             
             <div>
               <label className="block text-xs font-medium text-slate-300 mb-1">
@@ -97,36 +100,72 @@ export default function TradeFormModal({ isOpen, onClose, onSavePlan, initialDat
                 placeholder="e.g. RELIANCE"
                 value={formData.symbol}
                 onChange={(e) => setFormData({ ...formData, symbol: e.target.value.toUpperCase() })}
-                className="glass-input w-full font-mono uppercase font-bold text-cyan-300"
+                className="glass-input w-full font-mono uppercase font-bold text-cyan-300 text-sm"
               />
             </div>
 
             <div>
               <label className="block text-xs font-medium text-slate-300 mb-1">
-                Direction
+                Trade Direction
               </label>
-              <div className="grid grid-cols-2 gap-1">
+              <div className="grid grid-cols-2 gap-1.5">
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, tradeDirection: 'Long' })}
-                  className={`py-1.5 px-2 rounded-lg text-xs font-semibold border transition-all ${
+                  className={`py-1.5 px-2 rounded-lg text-xs font-medium border transition-all flex items-center justify-center gap-1 ${
                     formData.tradeDirection === 'Long'
                       ? 'bg-emerald-950/60 text-emerald-400 border-emerald-800'
-                      : 'bg-[#0c101a] text-slate-400 border-slate-800'
+                      : 'bg-[#0c101a] text-slate-400 border-slate-800 hover:border-slate-700'
                   }`}
                 >
-                  📈 Long
+                  <span>📈 Long</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, tradeDirection: 'Short' })}
-                  className={`py-1.5 px-2 rounded-lg text-xs font-semibold border transition-all ${
+                  className={`py-1.5 px-2 rounded-lg text-xs font-medium border transition-all flex items-center justify-center gap-1 ${
                     formData.tradeDirection === 'Short'
                       ? 'bg-rose-950/60 text-rose-400 border-rose-800'
-                      : 'bg-[#0c101a] text-slate-400 border-slate-800'
+                      : 'bg-[#0c101a] text-slate-400 border-slate-800 hover:border-slate-700'
                   }`}
                 >
-                  📉 Short
+                  <span>📉 Short</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Row 2: Trade Style, Exchange, Date */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            
+            {/* Trade Style */}
+            <div>
+              <label className="block text-xs font-medium text-slate-300 mb-1">
+                Trade Style
+              </label>
+              <div className="grid grid-cols-2 gap-1">
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, tradeStyle: 'Directional' })}
+                  className={`py-1.5 px-1 rounded-lg text-[11px] font-medium border transition-all ${
+                    formData.tradeStyle === 'Directional'
+                      ? 'bg-cyan-950/60 text-cyan-300 border-cyan-800'
+                      : 'bg-[#0c101a] text-slate-400 border-slate-800 hover:border-slate-700'
+                  }`}
+                >
+                  🎯 Directional
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, tradeStyle: 'Scalping' })}
+                  className={`py-1.5 px-1 rounded-lg text-[11px] font-medium border transition-all ${
+                    formData.tradeStyle === 'Scalping'
+                      ? 'bg-amber-950/60 text-amber-300 border-amber-800'
+                      : 'bg-[#0c101a] text-slate-400 border-slate-800 hover:border-slate-700'
+                  }`}
+                >
+                  ⚡ Scalping
                 </button>
               </div>
             </div>

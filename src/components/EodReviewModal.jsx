@@ -74,6 +74,9 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
               Pre-Market Plan: <strong className={trade.tradeDirection === 'Short' ? 'text-rose-400 font-mono' : 'text-emerald-400 font-mono'}>
                 {trade.tradeDirection === 'Short' ? '📉 SHORT' : '📈 LONG'}
               </strong>
+              <span className="text-slate-500 font-normal ml-1">
+                ({trade.tradeStyle || 'Directional'})
+              </span>
             </span>
             <span>{trade.setupType} • {trade.weeklyBias}/{trade.dailyBias}</span>
           </div>

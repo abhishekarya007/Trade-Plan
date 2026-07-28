@@ -3,6 +3,11 @@ export const DIRECTION_TYPES = {
   SHORT: 'Short'
 };
 
+export const TRADE_STYLES = {
+  DIRECTIONAL: 'Directional',
+  SCALPING: 'Scalping'
+};
+
 export const BIAS_TYPES = {
   BULLISH: 'Bullish',
   BEARISH: 'Bearish',
@@ -63,6 +68,7 @@ export const SAMPLE_TRADES = [
     symbol: 'RELIANCE',
     exchange: 'NSE',
     tradeDirection: 'Long',
+    tradeStyle: 'Directional',
     weeklyBias: 'Bullish',
     dailyBias: 'Bullish',
     setupType: 'Breakout',
@@ -80,6 +86,7 @@ export const SAMPLE_TRADES = [
     symbol: 'TCS',
     exchange: 'NSE',
     tradeDirection: 'Short',
+    tradeStyle: 'Scalping',
     weeklyBias: 'Bearish',
     dailyBias: 'Bearish',
     setupType: 'Resistance Short',
@@ -97,6 +104,7 @@ export const SAMPLE_TRADES = [
     symbol: 'NVDA',
     exchange: 'NASDAQ',
     tradeDirection: 'Long',
+    tradeStyle: 'Directional',
     weeklyBias: 'Bullish',
     dailyBias: 'Rangebound',
     setupType: 'VWAP Pullback',
@@ -114,6 +122,7 @@ export const SAMPLE_TRADES = [
     symbol: 'INFY',
     exchange: 'NSE',
     tradeDirection: 'Long',
+    tradeStyle: 'Scalping',
     weeklyBias: 'Neutral',
     dailyBias: 'Bullish',
     setupType: 'Support Bounce',
@@ -131,6 +140,7 @@ export const SAMPLE_TRADES = [
     symbol: 'TATAMOTORS',
     exchange: 'NSE',
     tradeDirection: 'Long',
+    tradeStyle: 'Directional',
     weeklyBias: 'Bullish',
     dailyBias: 'Bullish',
     setupType: 'Liquidity Sweep',
@@ -148,6 +158,7 @@ export const SAMPLE_TRADES = [
     symbol: 'AAPL',
     exchange: 'NASDAQ',
     tradeDirection: 'Short',
+    tradeStyle: 'Scalping',
     weeklyBias: 'Bearish',
     dailyBias: 'Bearish',
     setupType: 'Trend Continuation',

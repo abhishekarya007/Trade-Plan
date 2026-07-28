@@ -15,6 +15,7 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState('ALL'); // 'ALL' | 'TODAY' | 'YESTERDAY'
   const [searchQuery, setSearchQuery] = useState('');
   const [filterDirection, setFilterDirection] = useState('ALL');
+  const [filterStyle, setFilterStyle] = useState('ALL');
   const [filterBias, setFilterBias] = useState('ALL');
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [filterOutcome, setFilterOutcome] = useState('ALL');
@@ -149,6 +150,9 @@ export default function App() {
       // Direction filter
       if (filterDirection !== 'ALL' && t.tradeDirection !== filterDirection) return false;
 
+      // Style filter
+      if (filterStyle !== 'ALL' && t.tradeStyle !== filterStyle) return false;
+
       // Bias filter
       if (filterBias !== 'ALL') {
         if (t.weeklyBias !== filterBias && t.dailyBias !== filterBias) return false;
@@ -162,7 +166,7 @@ export default function App() {
 
       return true;
     });
-  }, [trades, selectedDate, searchQuery, filterDirection, filterBias, filterStatus, filterOutcome]);
+  }, [trades, selectedDate, searchQuery, filterDirection, filterStyle, filterBias, filterStatus, filterOutcome]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -207,6 +211,17 @@ export default function App() {
                 <option value="ALL">All Directions</option>
                 <option value="Long">Long 📈</option>
                 <option value="Short">Short 📉</option>
+              </select>
+
+              {/* Style Filter */}
+              <select
+                value={filterStyle}
+                onChange={(e) => setFilterStyle(e.target.value)}
+                className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer"
+              >
+                <option value="ALL">All Styles</option>
+                <option value="Directional">Directional 🎯</option>
+                <option value="Scalping">Scalping ⚡</option>
               </select>
 
               {/* Bias Filter */}

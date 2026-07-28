@@ -207,7 +207,7 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                     <thead className="bg-[#0e131f]/90 text-slate-400 font-medium border-b border-slate-800/40 uppercase tracking-wider text-[10px]">
                       <tr>
                         <th className="py-2.5 px-4">Stock</th>
-                        <th className="py-2.5 px-4">Dir</th>
+                        <th className="py-2.5 px-4">Dir & Style</th>
                         <th className="py-2.5 px-4">Biases (W/D)</th>
                         <th className="py-2.5 px-4">Setup Strategy</th>
                         <th className="py-2.5 px-4">Conviction</th>
@@ -238,15 +238,24 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                             </div>
                           </td>
 
-                          {/* Direction */}
+                          {/* Direction & Style */}
                           <td className="py-3 px-4 whitespace-nowrap font-mono text-xs">
-                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase border ${
-                              t.tradeDirection === 'Short'
-                                ? 'bg-rose-950/60 text-rose-400 border-rose-900/60'
-                                : 'bg-emerald-950/60 text-emerald-400 border-emerald-900/60'
-                            }`}>
-                              {t.tradeDirection === 'Short' ? '📉 Short' : '📈 Long'}
-                            </span>
+                            <div className="flex items-center gap-1">
+                              <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase border ${
+                                t.tradeDirection === 'Short'
+                                  ? 'bg-rose-950/60 text-rose-400 border-rose-900/60'
+                                  : 'bg-emerald-950/60 text-emerald-400 border-emerald-900/60'
+                              }`}>
+                                {t.tradeDirection === 'Short' ? '📉 Short' : '📈 Long'}
+                              </span>
+                              <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium border ${
+                                t.tradeStyle === 'Scalping'
+                                  ? 'bg-amber-950/40 text-amber-300 border-amber-900/50'
+                                  : 'bg-slate-900 text-slate-300 border-slate-800'
+                              }`}>
+                                {t.tradeStyle === 'Scalping' ? '⚡ Scalp' : '🎯 Dir'}
+                              </span>
+                            </div>
                           </td>
 
                           {/* Biases */}
