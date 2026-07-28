@@ -4,7 +4,6 @@ import {
   CheckSquare, 
   Trash2, 
   Calendar, 
-  Star, 
   Eye, 
   ChevronDown, 
   ChevronRight, 
@@ -42,11 +41,6 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
       const reviewed = dayTrades.filter(t => t.outcome && t.outcome !== 'Pending EOD' && t.outcome !== 'No Trade');
       const wins = reviewed.filter(t => t.outcome === 'Target Hit' || t.outcome === 'Partial Profit');
       const winRate = reviewed.length > 0 ? Math.round((wins.length / reviewed.length) * 100) : 0;
-      
-      const rated = dayTrades.filter(t => t.disciplineScore > 0);
-      const avgDiscipline = rated.length > 0 
-        ? (rated.reduce((acc, curr) => acc + curr.disciplineScore, 0) / rated.length).toFixed(1)
-        : null;
 
       return {
         date: dateStr,
@@ -55,13 +49,12 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
         executedCount: executed.length,
         reviewedCount: reviewed.length,
         winsCount: wins.length,
-        winRate,
-        avgDiscipline
+        winRate
       };
     });
   }, [trades]);
 
-  // Track expanded dates. Default: expand all dates initially
+  // Track expanded dates
   const [expandedDates, setExpandedDates] = useState(() => {
     const initial = {};
     if (trades) {
@@ -155,7 +148,7 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
               key={group.date}
               className="glass-panel overflow-hidden border border-slate-800/60 rounded-xl transition-all"
             >
-              {/* Accordion Header Row (Calm Daily Summary Bar) */}
+              {/* Accordion Header Row */}
               <div
                 onClick={() => toggleDateAccordion(group.date)}
                 className={`px-4 py-3 flex flex-wrap items-center justify-between gap-3 cursor-pointer select-none transition-colors ${
@@ -182,7 +175,7 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                   </div>
                 </div>
 
-                {/* Daily Metrics Summary Row */}
+                {/* Daily Metrics Summary */}
                 <div className="flex items-center gap-4 text-xs font-mono">
                   
                   {/* Executed Ratio */}
@@ -201,24 +194,16 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                     </div>
                   )}
 
-                  {/* Avg Discipline Score */}
-                  {group.avgDiscipline && (
-                    <div className="hidden sm:flex items-center gap-1 text-amber-400/90 font-medium">
-                      <Star className="h-3.5 w-3.5 fill-amber-400/90" />
-                      <span>{group.avgDiscipline} rating</span>
-                    </div>
-                  )}
-
                 </div>
 
               </div>
 
-              {/* Accordion Content Body (Child Trade Rows Table) */}
+              {/* Accordion Content Body (Table) */}
               {isExpanded && (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     
-                    {/* Table Sub-Header */}
+                    {/* Sub-Header */}
                     <thead className="bg-[#0e131f]/90 text-slate-400 font-medium border-b border-slate-800/40 uppercase tracking-wider text-[10px]">
                       <tr>
                         <th className="py-2.5 px-4">Stock</th>
@@ -228,7 +213,6 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                         <th className="py-2.5 px-4">Pre-Market Plan Rationale</th>
                         <th className="py-2.5 px-4">Execution Status</th>
                         <th className="py-2.5 px-4">Outcome</th>
-                        <th className="py-2.5 px-4">Discipline</th>
                         <th className="py-2.5 px-4 text-right">Actions</th>
                       </tr>
                     </thead>
@@ -316,18 +300,6 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                             }>
                               {t.outcome || 'Pending'}
                             </span>
-                          </td>
-
-                          {/* Discipline */}
-                          <td className="py-3 px-4 whitespace-nowrap font-mono text-xs">
-                            {t.disciplineScore > 0 ? (
-                              <div className="flex items-center gap-1 text-amber-400 font-semibold">
-                                <Star className="h-3 w-3 fill-amber-400" />
-                                <span>{t.disciplineScore}.0</span>
-                              </div>
-                            ) : (
-                              <span className="text-slate-600">—</span>
-                            )}
                           </td>
 
                           {/* Actions */}

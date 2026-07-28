@@ -9,7 +9,6 @@ import {
   Trash2, 
   Calendar, 
   Layers, 
-  Star, 
   MessageSquare, 
   Tag, 
   CheckCircle2, 
@@ -194,45 +193,14 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
               {getOutcomeBadge(trade.outcome)}
             </div>
 
-            {/* Execution status & Discipline score */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              
-              <div className="p-3 bg-[#0c101a] rounded-xl border border-slate-800/80 space-y-1">
-                <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">
-                  Execution Status
-                </span>
-                <div>
-                  {getStatusBadge(trade.status)}
-                </div>
+            {/* Execution status */}
+            <div className="p-3 bg-[#0c101a] rounded-xl border border-slate-800/80 space-y-1">
+              <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">
+                Execution Status
+              </span>
+              <div>
+                {getStatusBadge(trade.status)}
               </div>
-
-              <div className="p-3 bg-[#0c101a] rounded-xl border border-slate-800/80 space-y-1">
-                <span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">
-                  Discipline Self-Rating
-                </span>
-                <div className="flex items-center gap-2">
-                  {trade.disciplineScore > 0 ? (
-                    <>
-                      <div className="flex items-center text-amber-400">
-                        {[1, 2, 3, 4, 5].map(star => (
-                          <Star
-                            key={star}
-                            className={`h-3.5 w-3.5 ${
-                              star <= trade.disciplineScore ? 'fill-amber-400 text-amber-400' : 'text-slate-800'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="font-mono text-xs font-semibold text-amber-300">
-                        {trade.disciplineScore}.0 / 5.0
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-xs text-slate-500 italic">Not rated yet</span>
-                  )}
-                </div>
-              </div>
-
             </div>
 
             {/* Behavioral Tags */}

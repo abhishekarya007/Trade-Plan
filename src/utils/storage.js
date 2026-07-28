@@ -55,7 +55,6 @@ export const exportTradesToCSV = (trades) => {
     'Plan Rationale',
     'Status',
     'Outcome',
-    'Discipline Rating',
     'Emotion Tags',
     'EOD Notes'
   ];
@@ -71,7 +70,6 @@ export const exportTradesToCSV = (trades) => {
     `"${(t.planRationale || '').replace(/"/g, '""')}"`,
     `"${t.status || ''}"`,
     `"${t.outcome || ''}"`,
-    `"${t.disciplineScore || 0}"`,
     `"${(t.tags || []).join(', ')}"`,
     `"${(t.eodNotes || '').replace(/"/g, '""')}"`
   ]);

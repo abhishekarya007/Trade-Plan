@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, CheckCircle2, Award, Flame } from 'lucide-react';
+import { Target, CheckCircle2, Flame } from 'lucide-react';
 
 export default function KpiSummary({ trades }) {
   const totalPlans = trades.length;
@@ -20,15 +20,10 @@ export default function KpiSummary({ trades }) {
     ? Math.round((executedTrades.length / totalPlans) * 100)
     : 0;
 
-  const reviewedWithDiscipline = trades.filter(t => t.disciplineScore && t.disciplineScore > 0);
-  const avgDiscipline = reviewedWithDiscipline.length > 0
-    ? (reviewedWithDiscipline.reduce((acc, curr) => acc + curr.disciplineScore, 0) / reviewedWithDiscipline.length).toFixed(1)
-    : '0.0';
-
   const pendingReviews = trades.filter(t => t.outcome === 'Pending EOD' || t.status === 'Planned');
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-5">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-5">
       
       {/* Card 1: Total Trade Plans */}
       <div className="glass-card p-4 flex flex-col justify-between">
@@ -86,24 +81,6 @@ export default function KpiSummary({ trades }) {
         </div>
         <div className="mt-3 w-full bg-slate-800/60 h-1 rounded-full overflow-hidden">
           <div className="bg-emerald-400/80 h-full" style={{ width: `${winRate}%` }} />
-        </div>
-      </div>
-
-      {/* Card 4: Avg Discipline */}
-      <div className="glass-card p-4 flex flex-col justify-between">
-        <div>
-          <div className="flex items-center justify-between text-slate-400 text-xs mb-1.5 font-medium">
-            <span>Discipline Score</span>
-            <Award className="h-4 w-4 text-amber-400/70" />
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold font-mono text-slate-100">
-              {avgDiscipline} <span className="text-xs font-normal text-slate-500">/ 5</span>
-            </span>
-          </div>
-        </div>
-        <div className="mt-3 w-full bg-slate-800/60 h-1 rounded-full overflow-hidden">
-          <div className="bg-amber-400/80 h-full" style={{ width: `${(Number(avgDiscipline) / 5) * 100}%` }} />
         </div>
       </div>
 

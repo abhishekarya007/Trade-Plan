@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckSquare, Star, MessageSquare, Tag, Award } from 'lucide-react';
+import { X, CheckSquare, MessageSquare, Tag } from 'lucide-react';
 import { EXECUTION_STATUSES, OUTCOMES, EMOTION_TAGS } from '../types/trade';
 
 export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade }) {
   const [status, setStatus] = useState('Executed as Planned');
   const [outcome, setOutcome] = useState('Target Hit');
-  const [disciplineScore, setDisciplineScore] = useState(5);
   const [selectedTags, setSelectedTags] = useState([]);
   const [eodNotes, setEodNotes] = useState('');
 
@@ -13,7 +12,6 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
     if (trade) {
       setStatus(trade.status && trade.status !== 'Planned' ? trade.status : 'Executed as Planned');
       setOutcome(trade.outcome && trade.outcome !== 'Pending EOD' ? trade.outcome : 'Target Hit');
-      setDisciplineScore(trade.disciplineScore || 5);
       setSelectedTags(trade.tags || []);
       setEodNotes(trade.eodNotes || '');
     }
@@ -34,7 +32,6 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
     onSaveEodReview(trade.id, {
       status,
       outcome,
-      disciplineScore,
       tags: selectedTags,
       eodNotes
     });
@@ -130,36 +127,6 @@ export default function EodReviewModal({ isOpen, onClose, onSaveEodReview, trade
                   }`}
                 >
                   {out}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Discipline Score Rating */}
-          <div className="p-3 bg-[#0c101a] rounded-xl border border-slate-800 flex items-center justify-between">
-            <div>
-              <label className="block text-xs font-medium text-slate-300 mb-0.5 flex items-center gap-1.5">
-                <Award className="h-4 w-4 text-amber-400/80" />
-                <span>Discipline Rating</span>
-              </label>
-              <p className="text-[11px] text-slate-500">Self audit rating on rule adherence</p>
-            </div>
-
-            <div className="flex items-center gap-1">
-              {[1, 2, 3, 4, 5].map(star => (
-                <button
-                  key={star}
-                  type="button"
-                  onClick={() => setDisciplineScore(star)}
-                  className="p-0.5 text-amber-400 hover:scale-110 transition-transform"
-                >
-                  <Star
-                    className={`h-4.5 w-4.5 ${
-                      star <= disciplineScore
-                        ? 'fill-amber-400 text-amber-400'
-                        : 'text-slate-800'
-                    }`}
-                  />
                 </button>
               ))}
             </div>
