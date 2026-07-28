@@ -10,10 +10,11 @@ import {
   CheckCircle2, 
   Flame, 
   ChevronsUpDown,
-  ChevronsDownUp
+  ChevronsDownUp,
+  Copy
 } from 'lucide-react';
 
-export default function JournalTableView({ trades, onSelectTrade, onEditPlan, onDeletePlan, onOpenEodReview }) {
+export default function JournalTableView({ trades, onSelectTrade, onEditPlan, onDuplicatePlan, onDeletePlan, onOpenEodReview }) {
   // Group trades by date
   const groupedTrades = useMemo(() => {
     if (!trades || trades.length === 0) return [];
@@ -346,6 +347,13 @@ export default function JournalTableView({ trades, onSelectTrade, onEditPlan, on
                                 title="Edit Plan"
                               >
                                 <Edit3 className="h-3.5 w-3.5" />
+                              </button>
+                              <button
+                                onClick={() => onDuplicatePlan(t)}
+                                className="p-1 text-slate-400 hover:text-cyan-300 rounded transition-colors"
+                                title="Duplicate / Clone Plan"
+                              >
+                                <Copy className="h-3.5 w-3.5" />
                               </button>
                               <button
                                 onClick={() => onDeletePlan(t.id)}

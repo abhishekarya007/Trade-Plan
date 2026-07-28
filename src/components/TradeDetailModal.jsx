@@ -13,10 +13,11 @@ import {
   Tag, 
   CheckCircle2, 
   AlertTriangle,
-  BookOpen
+  BookOpen,
+  Copy
 } from 'lucide-react';
 
-export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, onOpenEodReview, onDeletePlan }) {
+export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, onDuplicatePlan, onOpenEodReview, onDeletePlan }) {
   if (!isOpen || !trade) return null;
 
   const getBiasBadge = (bias, label) => {
@@ -112,7 +113,16 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
               title="Edit Trade Plan"
             >
               <Edit3 className="h-4 w-4" />
-              <span className="hidden sm:inline">Edit Plan</span>
+              <span className="hidden sm:inline">Edit</span>
+            </button>
+
+            <button
+              onClick={() => { onClose(); onDuplicatePlan(trade); }}
+              className="p-1.5 text-slate-400 hover:text-cyan-300 hover:bg-slate-800 rounded-lg transition-colors flex items-center gap-1 text-xs"
+              title="Duplicate Plan"
+            >
+              <Copy className="h-4 w-4" />
+              <span className="hidden sm:inline">Clone</span>
             </button>
 
             <button

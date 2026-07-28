@@ -71,6 +71,21 @@ export default function App() {
     setEditingPlan(null);
   };
 
+  // Duplicate / Clone Plan
+  const handleDuplicatePlan = (tradeToClone) => {
+    const clonedPlan = {
+      ...tradeToClone,
+      id: `trade-${Date.now()}`,
+      date: new Date().toISOString().split('T')[0],
+      status: 'Planned',
+      outcome: 'Pending EOD',
+      tags: [],
+      eodNotes: '',
+      planRationale: `[Clone of ${tradeToClone.symbol}] ${tradeToClone.planRationale || ''}`
+    };
+    updateTradesState([clonedPlan, ...trades]);
+  };
+
   // EOD Review Save
   const handleSaveEodReview = (tradeId, reviewData) => {
     const updated = trades.map(t => t.id === tradeId ? { ...t, ...reviewData } : t);
@@ -287,6 +302,7 @@ export default function App() {
             trades={filteredTrades}
             onSelectTrade={handleSelectTrade}
             onEditPlan={handleEditPlan}
+            onDuplicatePlan={handleDuplicatePlan}
             onDeletePlan={handleDeletePlan}
             onOpenEodReview={handleOpenEodReview}
           />
@@ -325,6 +341,7 @@ export default function App() {
         onClose={() => setIsDetailModalOpen(false)}
         trade={selectedTradeDetail}
         onEditPlan={handleEditPlan}
+        onDuplicatePlan={handleDuplicatePlan}
         onOpenEodReview={handleOpenEodReview}
         onDeletePlan={handleDeletePlan}
       />
