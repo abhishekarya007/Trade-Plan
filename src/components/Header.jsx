@@ -70,65 +70,65 @@ export default function Header({
 
   return (
     <>
-      <header className="sticky top-0 z-30 bg-[#0b0f17]/95 backdrop-blur-md border-b border-slate-800/60">
+      <header className="sticky top-0 z-30 bg-[#161b22] border-b border-[#30363d]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-3">
             
             {/* Left Block: Brand Logo & Navigation Tabs */}
             <div className="flex flex-wrap items-center justify-between w-full lg:w-auto gap-4">
+              
               {/* Logo & Tagline */}
               <div className="flex items-center gap-2.5">
-                <div className="h-8.5 w-8.5 rounded-xl bg-slate-800/90 border border-slate-700/60 flex items-center justify-center text-cyan-400 shrink-0">
+                <div className="h-8 w-8 rounded-lg bg-[#21262d] border border-[#30363d] flex items-center justify-center text-cyan-400 shrink-0">
                   <TrendingUp className="h-4 w-4" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-1.5">
-                    <h1 className="text-base font-bold tracking-tight text-slate-100 font-sans">
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-base font-bold tracking-tight text-[#f0f6fc] font-sans">
                       Trade<span className="text-cyan-400 font-mono">Plan</span>
                     </h1>
-                    <span className="text-[9px] font-semibold tracking-wider text-slate-400 bg-slate-800/60 border border-slate-700/50 px-1.5 py-0.5 rounded">
-                      Intraday
+                    <span className="text-[10px] font-medium tracking-wider text-[#8b949e] bg-[#21262d] border border-[#30363d] px-1.5 py-0.5 rounded font-mono">
+                      INTRADAY
                     </span>
                   </div>
-                  <p className="text-[10px] text-slate-400 hidden sm:block">Pre-Market & EOD Audit</p>
                 </div>
               </div>
 
               {/* View Switcher Tabs */}
-              <div className="bg-[#111622] p-1 rounded-xl border border-slate-800/80 flex items-center gap-1">
+              <div className="bg-[#0d1117] p-1 rounded-lg border border-[#30363d] flex items-center gap-1">
                 <button
                   onClick={() => setActiveTab('journal')}
-                  className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-colors ${
                     activeTab === 'journal'
-                      ? 'bg-slate-800 text-cyan-300 border border-slate-700/60 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-[#21262d] text-[#f0f6fc] border border-[#30363d]'
+                      : 'text-[#8b949e] hover:text-[#c9d1d9]'
                   }`}
                 >
-                  <Table className="h-3.5 w-3.5" />
+                  <Table className={`h-3.5 w-3.5 ${activeTab === 'journal' ? 'text-cyan-400' : ''}`} />
                   <span>Ledger</span>
                 </button>
 
                 <button
                   onClick={() => setActiveTab('calendar')}
-                  className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-colors ${
                     activeTab === 'calendar'
-                      ? 'bg-slate-800 text-cyan-300 border border-slate-700/60 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-[#21262d] text-[#f0f6fc] border border-[#30363d]'
+                      : 'text-[#8b949e] hover:text-[#c9d1d9]'
                   }`}
                 >
-                  <Calendar className="h-3.5 w-3.5" />
+                  <Calendar className={`h-3.5 w-3.5 ${activeTab === 'calendar' ? 'text-cyan-400' : ''}`} />
                   <span>Calendar</span>
                 </button>
 
                 <button
                   onClick={() => setActiveTab('analytics')}
-                  className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-colors ${
                     activeTab === 'analytics'
-                      ? 'bg-slate-800 text-cyan-300 border border-slate-700/60 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-[#21262d] text-[#f0f6fc] border border-[#30363d]'
+                      : 'text-[#8b949e] hover:text-[#c9d1d9]'
                   }`}
                 >
-                  <BarChart3 className="h-3.5 w-3.5" />
+                  <BarChart3 className={`h-3.5 w-3.5 ${activeTab === 'analytics' ? 'text-cyan-400' : ''}`} />
                   <span>Analytics</span>
                 </button>
               </div>
@@ -148,34 +148,34 @@ export default function Header({
               
               {/* Quick Search */}
               <div className="relative flex-1 sm:flex-none sm:w-36">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500" />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#8b949e]" />
                 <input
                   type="text"
                   placeholder="Search stock..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-[#111622] border border-slate-800 text-xs text-slate-200 placeholder-slate-500 rounded-xl pl-8 pr-2.5 py-1.5 focus:outline-none focus:border-cyan-500/50"
+                  className="w-full bg-[#0d1117] border border-[#30363d] text-xs text-[#c9d1d9] placeholder-[#8b949e] rounded-lg pl-8 pr-2.5 py-1.5 focus:outline-none focus:border-[#484f58]"
                 />
               </div>
 
               {/* Date Filter Selector */}
-              <div className="flex items-center gap-1 bg-[#111622] border border-slate-800 rounded-xl px-2 py-1 text-xs text-slate-300">
-                <Calendar className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+              <div className="flex items-center gap-1 bg-[#0d1117] border border-[#30363d] rounded-lg px-2.5 py-1 text-xs text-[#c9d1d9]">
+                <Calendar className="h-3.5 w-3.5 text-[#8b949e] shrink-0" />
                 <select
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  className="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer"
+                  className="bg-transparent text-xs text-[#c9d1d9] focus:outline-none cursor-pointer font-medium"
                 >
-                  <option value="ALL" className="bg-[#111622] text-slate-200">All Dates</option>
-                  <option value="TODAY" className="bg-[#111622] text-slate-200">Today</option>
-                  <option value="YESTERDAY" className="bg-[#111622] text-slate-200">Yesterday</option>
+                  <option value="ALL" className="bg-[#161b22] text-[#c9d1d9]">All Dates</option>
+                  <option value="TODAY" className="bg-[#161b22] text-[#c9d1d9]">Today</option>
+                  <option value="YESTERDAY" className="bg-[#161b22] text-[#c9d1d9]">Yesterday</option>
                 </select>
               </div>
 
               {/* Playbook Rules Button */}
               <button
                 onClick={() => setIsPlaybookOpen(true)}
-                className="bg-[#111622] hover:bg-slate-800/80 text-amber-300 border border-slate-800 hover:border-slate-700 px-2.5 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1 transition-all"
+                className="bg-[#21262d] hover:bg-[#30363d] text-amber-400 border border-[#30363d] px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors"
                 title="Trading Rules Playbook"
               >
                 <ShieldCheck className="h-3.5 w-3.5 text-amber-400" />
@@ -183,10 +183,10 @@ export default function Header({
               </button>
 
               {/* Import / Export Utility Bar */}
-              <div className="flex items-center gap-0.5 bg-[#111622] p-1 rounded-xl border border-slate-800">
+              <div className="flex items-center gap-0.5 bg-[#0d1117] p-1 rounded-lg border border-[#30363d]">
                 <button
                   onClick={handleExportJSON}
-                  className="p-1 text-slate-400 hover:text-slate-200 rounded transition-colors"
+                  className="p-1 text-[#8b949e] hover:text-[#c9d1d9] rounded transition-colors"
                   title="Export JSON"
                 >
                   <Download className="h-3.5 w-3.5" />
@@ -194,13 +194,13 @@ export default function Header({
 
                 <button
                   onClick={handleExportCSV}
-                  className="p-1 text-slate-400 hover:text-emerald-300 rounded transition-colors text-xs font-mono font-bold"
+                  className="p-1 text-[#8b949e] hover:text-emerald-400 rounded transition-colors text-xs font-mono font-bold"
                   title="Export CSV"
                 >
                   CSV
                 </button>
 
-                <label className="p-1 text-slate-400 hover:text-slate-200 rounded cursor-pointer transition-colors" title="Import JSON">
+                <label className="p-1 text-[#8b949e] hover:text-[#c9d1d9] rounded cursor-pointer transition-colors" title="Import JSON">
                   <Upload className="h-3.5 w-3.5" />
                   <input
                     type="file"
@@ -213,7 +213,7 @@ export default function Header({
 
                 <button
                   onClick={onResetData}
-                  className="p-1 text-slate-400 hover:text-rose-400 rounded transition-colors"
+                  className="p-1 text-[#8b949e] hover:text-rose-400 rounded transition-colors"
                   title="Reset to Demo Data"
                 >
                   <RotateCcw className="h-3.5 w-3.5" />
@@ -223,7 +223,7 @@ export default function Header({
               {/* EOD Audit */}
               <button
                 onClick={onOpenEodReviewModal}
-                className="bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700/60 px-3 py-1.5 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-all"
+                className="bg-[#21262d] hover:bg-[#30363d] text-[#c9d1d9] border border-[#30363d] px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors"
               >
                 <CheckSquare className="h-3.5 w-3.5 text-emerald-400" />
                 <span className="hidden sm:inline">EOD Audit</span>
@@ -232,7 +232,7 @@ export default function Header({
               {/* New Trade Plan Trigger */}
               <button
                 onClick={onOpenNewPlanModal}
-                className="hidden lg:flex bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-xl text-xs items-center gap-1.5 transition-all shadow-sm"
+                className="hidden lg:flex bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold px-3.5 py-1.5 rounded-lg text-xs items-center gap-1.5 transition-colors"
               >
                 <PlusCircle className="h-3.5 w-3.5" />
                 <span>New Plan</span>
