@@ -1,7 +1,7 @@
 import React from 'react';
-import { Edit3, CheckSquare, Trash2, TrendingUp, TrendingDown, Star, Calendar } from 'lucide-react';
+import { Edit3, CheckSquare, Trash2, Calendar, Star, Eye } from 'lucide-react';
 
-export default function JournalTableView({ trades, onEditPlan, onDeletePlan, onOpenEodReview }) {
+export default function JournalTableView({ trades, onSelectTrade, onEditPlan, onDeletePlan, onOpenEodReview }) {
   if (!trades || trades.length === 0) {
     return (
       <div className="glass-panel p-8 text-center text-slate-400">
@@ -33,12 +33,17 @@ export default function JournalTableView({ trades, onEditPlan, onDeletePlan, onO
           {/* Table Body */}
           <tbody className="divide-y divide-slate-800/60 font-sans">
             {trades.map((t) => (
-              <tr key={t.id} className="hover:bg-slate-900/50 transition-colors">
+              <tr 
+                key={t.id} 
+                onClick={() => onSelectTrade(t)}
+                className="hover:bg-slate-800/60 cursor-pointer transition-colors group"
+                title="Click to open full trade detail view"
+              >
                 
                 {/* Date & Stock */}
                 <td className="py-3.5 px-4 whitespace-nowrap">
                   <div className="flex flex-col">
-                    <div className="flex items-center gap-1.5 font-mono font-bold text-sm text-white">
+                    <div className="flex items-center gap-1.5 font-mono font-bold text-sm text-white group-hover:text-cyan-400 transition-colors">
                       <span>{t.symbol}</span>
                       <span className="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.2 rounded border border-slate-700 font-normal">
                         {t.exchange || 'NSE'}
@@ -131,7 +136,14 @@ export default function JournalTableView({ trades, onEditPlan, onDeletePlan, onO
 
                 {/* Action Buttons */}
                 <td className="py-3.5 px-4 whitespace-nowrap text-right">
-                  <div className="flex items-center justify-end gap-1.5">
+                  <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      onClick={() => onSelectTrade(t)}
+                      className="p-1.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded border border-slate-800 transition-colors"
+                      title="View Details"
+                    >
+                      <Eye className="h-3.5 w-3.5" />
+                    </button>
                     <button
                       onClick={() => onOpenEodReview(t)}
                       className="p-1.5 bg-slate-800 hover:bg-cyan-950 hover:text-cyan-400 text-slate-300 rounded border border-slate-700 transition-colors"

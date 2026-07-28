@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Header from './components/Header';
 import KpiSummary from './components/KpiSummary';
-import TradeCard from './components/TradeCard';
 import JournalTableView from './components/JournalTableView';
 import AnalyticsView from './components/AnalyticsView';
 import TradeFormModal from './components/TradeFormModal';
 import EodReviewModal from './components/EodReviewModal';
+import TradeDetailModal from './components/TradeDetailModal';
 import { getStoredTrades, saveStoredTrades, resetToDemoData } from './utils/storage';
-import { PlusCircle, Filter, RotateCcw, AlertCircle, CheckSquare } from 'lucide-react';
+import { PlusCircle, Filter, AlertCircle } from 'lucide-react';
 
 export default function App() {
   const [trades, setTrades] = useState([]);
-  const [activeTab, setActiveTab] = useState('cards'); // 'cards' | 'journal' | 'analytics'
+  const [activeTab, setActiveTab] = useState('journal'); // 'journal' (Ledger) | 'analytics'
   const [selectedDate, setSelectedDate] = useState('ALL'); // 'ALL' | 'TODAY' | 'YESTERDAY'
   const [searchQuery, setSearchQuery] = useState('');
   const [filterBias, setFilterBias] = useState('ALL');
@@ -21,8 +21,11 @@ export default function App() {
   // Modal States
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isEodModalOpen, setIsEodModalOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  
   const [editingPlan, setEditingPlan] = useState(null);
   const [eodTargetTrade, setEodTargetTrade] = useState(null);
+  const [selectedTradeDetail, setSelectedTradeDetail] = useState(null);
 
   // Initial Data Load
   useEffect(() => {
@@ -34,6 +37,14 @@ export default function App() {
   const updateTradesState = (newTrades) => {
     setTrades(newTrades);
     saveStoredTrades(newTrades);
+
+    // If detail modal is open for a trade that was updated, refresh detail modal data
+    if (selectedTradeDetail) {
+      const refreshed = newTrades.find(t => t.id === selectedTradeDetail.id);
+      if (refreshed) {
+        setSelectedTradeDetail(refreshed);
+      }
+    }
   };
 
   // Pre-Market Plan Add or Edit
@@ -66,9 +77,11 @@ export default function App() {
 
   // Delete Plan
   const handleDeletePlan = (tradeId) => {
-    if (window.confirm('Are you sure you want to delete this trade plan?')) {
-      const updated = trades.filter(t => t.id !== tradeId);
-      updateTradesState(updated);
+    const updated = trades.filter(t => t.id !== tradeId);
+    updateTradesState(updated);
+    if (selectedTradeDetail && selectedTradeDetail.id === tradeId) {
+      setIsDetailModalOpen(false);
+      setSelectedTradeDetail(null);
     }
   };
 
@@ -78,6 +91,12 @@ export default function App() {
       const freshData = resetToDemoData();
       setTrades(freshData);
     }
+  };
+
+  // Row Select -> Open Detail Modal
+  const handleSelectTrade = (trade) => {
+    setSelectedTradeDetail(trade);
+    setIsDetailModalOpen(true);
   };
 
   // Open Handlers
@@ -97,7 +116,6 @@ export default function App() {
   };
 
   const handleBatchEodOpen = () => {
-    // Open EOD review for the first pending trade or most recent trade
     const pending = trades.find(t => t.outcome === 'Pending EOD' || t.status === 'Planned');
     if (pending) {
       handleOpenEodReview(pending);
@@ -218,50 +236,23 @@ export default function App() {
             </select>
           </div>
 
-          {/* Result Count */}
-          <div className="text-slate-400 font-mono text-[11px] px-2 py-1 bg-slate-900 rounded-md border border-slate-800">
-            Showing <span className="font-bold text-white">{filteredTrades.length}</span> of {trades.length} plans
+          {/* Result Count & Tip */}
+          <div className="flex items-center gap-3">
+            <span className="text-slate-500 text-[11px] hidden sm:inline italic">
+              💡 Tip: Click any row to view full strategy details
+            </span>
+            <div className="text-slate-400 font-mono text-[11px] px-2 py-1 bg-slate-900 rounded-md border border-slate-800">
+              Showing <span className="font-bold text-white">{filteredTrades.length}</span> of {trades.length} plans
+            </div>
           </div>
 
         </div>
 
         {/* Dynamic Content Views */}
-        {activeTab === 'cards' && (
-          <div>
-            {filteredTrades.length === 0 ? (
-              <div className="glass-panel p-12 text-center space-y-3">
-                <AlertCircle className="h-10 w-10 text-slate-600 mx-auto" />
-                <h3 className="text-base font-bold text-slate-300">No Trade Plans Found</h3>
-                <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                  No trade plans match your active filters. Create a new pre-market plan or reset filters.
-                </p>
-                <button
-                  onClick={handleOpenNewPlan}
-                  className="inline-flex items-center gap-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs shadow-lg transition-all mt-2"
-                >
-                  <PlusCircle className="h-4 w-4" />
-                  <span>Add First Trade Plan</span>
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {filteredTrades.map((trade) => (
-                  <TradeCard
-                    key={trade.id}
-                    trade={trade}
-                    onEditPlan={handleEditPlan}
-                    onDeletePlan={handleDeletePlan}
-                    onOpenEodReview={handleOpenEodReview}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
         {activeTab === 'journal' && (
           <JournalTableView
             trades={filteredTrades}
+            onSelectTrade={handleSelectTrade}
             onEditPlan={handleEditPlan}
             onDeletePlan={handleDeletePlan}
             onOpenEodReview={handleOpenEodReview}
@@ -276,7 +267,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="border-t border-slate-900 bg-slate-950 py-4 mt-12 text-center text-xs text-slate-500">
-        <p>TradePlan Intraday Trading Suite &copy; {new Date().getFullYear()} • Local Offline Storage Active</p>
+        <p>TradePlan Intraday Trading Ledger &copy; {new Date().getFullYear()} • Local Offline Storage Active</p>
       </footer>
 
       {/* Pre-Market Plan Form Modal */}
@@ -293,6 +284,16 @@ export default function App() {
         onClose={() => setIsEodModalOpen(false)}
         onSaveEodReview={handleSaveEodReview}
         trade={eodTargetTrade}
+      />
+
+      {/* Trade Detail Modal (Triggered on Ledger Row Click) */}
+      <TradeDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        trade={selectedTradeDetail}
+        onEditPlan={handleEditPlan}
+        onOpenEodReview={handleOpenEodReview}
+        onDeletePlan={handleDeletePlan}
       />
 
     </div>

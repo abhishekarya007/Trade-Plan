@@ -6,7 +6,6 @@ import {
   Download, 
   Upload, 
   RotateCcw, 
-  LayoutDashboard, 
   Table, 
   BarChart3,
   Calendar,
@@ -70,7 +69,7 @@ export default function Header({
                     Trade<span className="text-cyan-400 font-mono">Plan</span>
                   </h1>
                   <span className="text-[10px] font-semibold uppercase tracking-wider bg-cyan-950/80 text-cyan-400 border border-cyan-800/60 px-2 py-0.5 rounded-full">
-                    Intraday Suite
+                    Intraday Ledger
                   </span>
                 </div>
                 <p className="text-xs text-slate-400">Pre-Market Strategy & EOD Execution Audit</p>
@@ -91,35 +90,23 @@ export default function Header({
 
           {/* Navigation Tabs & Search */}
           <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-            {/* View Switcher Tabs */}
+            {/* View Switcher Tabs (Ledger & Analytics) */}
             <div className="bg-slate-900/90 p-1 rounded-xl border border-slate-800 flex items-center gap-1">
               <button
-                onClick={() => setActiveTab('cards')}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                  activeTab === 'cards'
-                    ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-                }`}
-              >
-                <LayoutDashboard className="h-3.5 w-3.5" />
-                <span>Cards</span>
-              </button>
-              
-              <button
                 onClick={() => setActiveTab('journal')}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   activeTab === 'journal'
                     ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
                 }`}
               >
                 <Table className="h-3.5 w-3.5" />
-                <span>Ledger</span>
+                <span>Trade Ledger</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('analytics')}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                   activeTab === 'analytics'
                     ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
