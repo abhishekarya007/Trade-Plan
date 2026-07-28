@@ -3,41 +3,101 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-[#0b0f17] text-slate-200 font-sans antialiased selection:bg-cyan-500/30 selection:text-cyan-200;
-    background-image: 
-      radial-gradient(circle at 50% 0%, rgba(30, 41, 59, 0.3) 0%, transparent 75%),
-      radial-gradient(circle at 90% 20%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
-    background-attachment: fixed;
+  :root {
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
   }
 
-  /* Custom subtle scrollbar */
-  ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #0b0f17;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #1e293b;
-    border-radius: 9999px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #334155;
+  body {
+    font-family: var(--font-sans);
+    background-color: #0d1117;
+    color: #c9d1d9;
   }
 }
 
-@layer utilities {
-  .glass-panel {
-    @apply bg-[#111622]/90 backdrop-blur-md border border-slate-800/60 rounded-2xl shadow-sm;
+/* Linear / Raycast Minimalist Slate Utility Classes */
+@layer components {
+  .slate-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 0.75rem;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
   }
-  
-  .glass-card {
-    @apply bg-[#111622]/70 backdrop-blur-sm border border-slate-800/50 rounded-xl transition-all duration-200 hover:border-slate-700/60 hover:bg-[#151c2c]/80;
+
+  .slate-card:hover {
+    border-color: #484f58;
+    background-color: #1c2129;
+  }
+
+  .slate-badge-mint {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    font-family: var(--font-mono);
+  }
+
+  .slate-badge-coral {
+    background-color: rgba(244, 63, 94, 0.1);
+    color: #f87171;
+    border: 1px solid rgba(244, 63, 94, 0.2);
+    font-family: var(--font-mono);
+  }
+
+  .slate-badge-amber {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    font-family: var(--font-mono);
+  }
+
+  .slate-badge-cyan {
+    background-color: rgba(6, 182, 212, 0.1);
+    color: #38bdf8;
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    font-family: var(--font-mono);
   }
 
   .glass-input {
-    @apply bg-[#0d121d] border border-slate-800 text-slate-200 placeholder-slate-500 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all;
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    color: #f0f6fc;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
+
+  .glass-input::placeholder {
+    color: #8b949e;
+  }
+
+  .glass-input:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+  }
+
+  .glass-input option {
+    background-color: #161b22;
+    color: #f0f6fc;
+  }
+}
+
+/* Clean Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d1117;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #21262d;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #30363d;
 }

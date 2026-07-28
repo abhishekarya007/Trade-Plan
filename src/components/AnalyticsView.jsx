@@ -16,8 +16,8 @@ import { SETUP_TYPES, EXECUTION_STATUSES } from '../types/trade';
 export default function AnalyticsView({ trades }) {
   if (!trades || trades.length === 0) {
     return (
-      <div className="glass-panel p-8 text-center text-slate-400">
-        <p className="text-sm">No trade data available for analytics.</p>
+      <div className="slate-card p-8 text-center text-[#8b949e]">
+        <p className="text-xs">No trade data available for analytics.</p>
       </div>
     );
   }
@@ -100,130 +100,130 @@ export default function AnalyticsView({ trades }) {
   const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       
       {/* Section 1: Top Key Performance Highlights */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Long Win Rate */}
-        <div className="glass-card p-4 flex flex-col justify-between">
+        <div className="slate-card p-5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-medium">
+            <div className="flex items-center justify-between text-[#8b949e] text-xs mb-2 font-medium">
               <span>Long Trades 📈</span>
-              <TrendingUp className="h-4 w-4 text-emerald-400/80" />
+              <TrendingUp className="h-4 w-4 text-emerald-400/70" />
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold font-mono text-emerald-400">{longWinRate}%</span>
-              <span className="text-[11px] text-slate-500">{longWins.length}/{longTrades.length} wins</span>
+              <span className="text-2xl font-bold font-mono text-emerald-400/90">{longWinRate}%</span>
+              <span className="text-xs text-[#8b949e]">{longWins.length}/{longTrades.length} wins</span>
             </div>
           </div>
-          <div className="mt-3 w-full bg-slate-800/60 h-1 rounded-full overflow-hidden">
-            <div className="bg-emerald-400/80 h-full" style={{ width: `${longWinRate}%` }} />
+          <div className="mt-4 w-full bg-[#21262d] h-1.5 rounded-full overflow-hidden">
+            <div className="bg-emerald-500/50 h-full" style={{ width: `${longWinRate}%` }} />
           </div>
         </div>
 
         {/* Short Win Rate */}
-        <div className="glass-card p-4 flex flex-col justify-between">
+        <div className="slate-card p-5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-medium">
+            <div className="flex items-center justify-between text-[#8b949e] text-xs mb-2 font-medium">
               <span>Short Trades 📉</span>
-              <TrendingDown className="h-4 w-4 text-rose-400/80" />
+              <TrendingDown className="h-4 w-4 text-rose-400/70" />
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold font-mono text-rose-400">{shortWinRate}%</span>
-              <span className="text-[11px] text-slate-500">{shortWins.length}/{shortTrades.length} wins</span>
+              <span className="text-2xl font-bold font-mono text-rose-400/90">{shortWinRate}%</span>
+              <span className="text-xs text-[#8b949e]">{shortWins.length}/{shortTrades.length} wins</span>
             </div>
           </div>
-          <div className="mt-3 w-full bg-slate-800/60 h-1 rounded-full overflow-hidden">
-            <div className="bg-rose-400/80 h-full" style={{ width: `${shortWinRate}%` }} />
+          <div className="mt-4 w-full bg-[#21262d] h-1.5 rounded-full overflow-hidden">
+            <div className="bg-rose-500/50 h-full" style={{ width: `${shortWinRate}%` }} />
           </div>
         </div>
 
         {/* Style Efficiency */}
-        <div className="glass-card p-4 flex flex-col justify-between">
+        <div className="slate-card p-5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-medium">
+            <div className="flex items-center justify-between text-[#8b949e] text-xs mb-2 font-medium">
               <span>Style Efficiency</span>
-              <Zap className="h-4 w-4 text-amber-400/80" />
+              <Zap className="h-4 w-4 text-amber-400/70" />
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-xl font-bold font-mono text-slate-100">{dirWinRate}% Dir</span>
-              <span className="text-xs text-slate-400 font-mono">/ {scalpWinRate}% Scalp</span>
+              <span className="text-xl font-bold font-mono text-[#c9d1d9]">{dirWinRate}% Dir</span>
+              <span className="text-xs text-[#8b949e] font-mono">/ {scalpWinRate}% Scalp</span>
             </div>
           </div>
-          <div className="mt-3 w-full bg-slate-800/60 h-1 rounded-full overflow-hidden flex">
-            <div className="bg-cyan-400/80 h-full" style={{ width: `${dirWinRate}%` }} />
+          <div className="mt-4 w-full bg-[#21262d] h-1.5 rounded-full overflow-hidden flex">
+            <div className="bg-cyan-500/50 h-full" style={{ width: `${dirWinRate}%` }} />
           </div>
         </div>
 
         {/* Bias Alignment Confluence */}
-        <div className="glass-card p-4 flex flex-col justify-between">
+        <div className="slate-card p-5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between text-slate-400 text-xs mb-1 font-medium">
+            <div className="flex items-center justify-between text-[#8b949e] text-xs mb-2 font-medium">
               <span>Bias Confluence</span>
-              <Compass className="h-4 w-4 text-cyan-400/80" />
+              <Compass className="h-4 w-4 text-cyan-400/70" />
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-bold font-mono text-cyan-300">{alignedWinRate}%</span>
-              <span className="text-[11px] text-slate-500">when W & D match</span>
+              <span className="text-2xl font-bold font-mono text-cyan-300/90">{alignedWinRate}%</span>
+              <span className="text-xs text-[#8b949e]">when W & D match</span>
             </div>
           </div>
-          <div className="mt-3 w-full bg-slate-800/60 h-1 rounded-full overflow-hidden">
-            <div className="bg-cyan-400/80 h-full" style={{ width: `${alignedWinRate}%` }} />
+          <div className="mt-4 w-full bg-[#21262d] h-1.5 rounded-full overflow-hidden">
+            <div className="bg-cyan-500/50 h-full" style={{ width: `${alignedWinRate}%` }} />
           </div>
         </div>
 
       </div>
 
       {/* Section 2: Behavioral & Psychological Audit Insight Panel */}
-      <div className="glass-panel p-5 border border-slate-800/60 space-y-3">
+      <div className="slate-card p-5 space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ShieldAlert className="h-4 w-4 text-amber-400/80" />
-            <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+            <ShieldAlert className="h-4 w-4 text-[#8b949e]" />
+            <h3 className="text-xs font-semibold text-[#f0f6fc] uppercase tracking-wider">
               Behavioral Tag & Mindset Impact Audit
             </h3>
           </div>
-          <span className="text-[11px] text-slate-500 font-mono">Disciplined vs Mistake Comparison</span>
+          <span className="text-xs text-[#8b949e] font-mono">Disciplined vs Mistake Comparison</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           
           {/* Disciplined Trades Performance */}
-          <div className="p-3.5 bg-[#0c101a] rounded-xl border border-emerald-900/40 space-y-2">
+          <div className="p-4 bg-[#0d1117] rounded-xl border border-emerald-500/20 space-y-2.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-emerald-400 flex items-center gap-1.5">
-                <Award className="h-3.5 w-3.5 text-emerald-400" />
+              <span className="font-semibold text-emerald-400/90 flex items-center gap-1.5">
+                <Award className="h-4 w-4 text-emerald-400/70" />
                 <span>Disciplined Execution Trades</span>
               </span>
-              <span className="font-mono text-xs font-bold text-emerald-300">
+              <span className="font-mono text-xs font-bold text-emerald-400/90">
                 {disciplinedWinRate}% Win Rate
               </span>
             </div>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-xs text-[#8b949e] leading-relaxed">
               {disciplinedWins.length} wins out of {disciplinedTrades.length} trades tagged with patience or rule adherence.
             </p>
-            <div className="w-full bg-slate-800/60 h-1 rounded-full overflow-hidden">
-              <div className="bg-emerald-400 h-full" style={{ width: `${disciplinedWinRate}%` }} />
+            <div className="w-full bg-[#21262d] h-1.5 rounded-full overflow-hidden">
+              <div className="bg-emerald-500/50 h-full" style={{ width: `${disciplinedWinRate}%` }} />
             </div>
           </div>
 
           {/* Mistake Trades Performance */}
-          <div className="p-3.5 bg-[#0c101a] rounded-xl border border-rose-900/40 space-y-2">
+          <div className="p-4 bg-[#0d1117] rounded-xl border border-rose-500/20 space-y-2.5">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-rose-400 flex items-center gap-1.5">
-                <AlertTriangle className="h-3.5 w-3.5 text-rose-400" />
+              <span className="font-semibold text-rose-400/90 flex items-center gap-1.5">
+                <AlertTriangle className="h-4 w-4 text-rose-400/70" />
                 <span>Behavioral Mistake Trades</span>
               </span>
-              <span className="font-mono text-xs font-bold text-rose-400">
+              <span className="font-mono text-xs font-bold text-rose-400/90">
                 {mistakeWinRate}% Win Rate
               </span>
             </div>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-xs text-[#8b949e] leading-relaxed">
               {mistakeWins.length} wins out of {mistakeTradeList.length} trades affected by FOMO, early exit, or revenge trading.
             </p>
-            <div className="w-full bg-slate-800/60 h-1 rounded-full overflow-hidden">
-              <div className="bg-rose-400 h-full" style={{ width: `${mistakeWinRate}%` }} />
+            <div className="w-full bg-[#21262d] h-1.5 rounded-full overflow-hidden">
+              <div className="bg-rose-500/50 h-full" style={{ width: `${mistakeWinRate}%` }} />
             </div>
           </div>
 
@@ -234,32 +234,32 @@ export default function AnalyticsView({ trades }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         
         {/* Strategy Win Rate Breakdown */}
-        <div className="glass-panel p-5 border border-slate-800/60">
+        <div className="slate-card p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4 text-cyan-400/80" />
-              <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+              <BarChart3 className="h-4 w-4 text-cyan-400/70" />
+              <h3 className="text-xs font-semibold text-[#f0f6fc] uppercase tracking-wider">
                 Setup Strategy Performance
               </h3>
             </div>
-            <span className="text-[11px] text-slate-500 font-mono">Ranked by Win Rate</span>
+            <span className="text-xs text-[#8b949e] font-mono">Ranked by Win Rate</span>
           </div>
 
           <div className="space-y-3.5">
             {setupStats.map((st) => (
-              <div key={st.name} className="space-y-1">
+              <div key={st.name} className="space-y-1.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-medium text-slate-300">{st.name}</span>
+                  <span className="font-medium text-[#c9d1d9]">{st.name}</span>
                   <div className="flex items-center gap-2 font-mono">
-                    <span className="text-slate-500 text-[11px]">{st.wins}/{st.reviewed} wins</span>
-                    <span className={`font-semibold ${st.winRate >= 50 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    <span className="text-[#8b949e] text-[11px]">{st.wins}/{st.reviewed} wins</span>
+                    <span className={`font-semibold ${st.winRate >= 50 ? 'text-emerald-400/90' : 'text-amber-400/90'}`}>
                       {st.winRate}%
                     </span>
                   </div>
                 </div>
-                <div className="w-full bg-slate-800/60 h-1.5 rounded-full overflow-hidden">
+                <div className="w-full bg-[#21262d] h-1.5 rounded-full overflow-hidden">
                   <div 
-                    className={`h-full transition-all ${st.winRate >= 50 ? 'bg-emerald-400/80' : 'bg-amber-400/80'}`}
+                    className={`h-full transition-all ${st.winRate >= 50 ? 'bg-emerald-500/50' : 'bg-amber-500/50'}`}
                     style={{ width: `${st.winRate}%` }}
                   />
                 </div>
@@ -269,18 +269,18 @@ export default function AnalyticsView({ trades }) {
         </div>
 
         {/* Execution Status Distribution */}
-        <div className="glass-panel p-5 border border-slate-800/60">
+        <div className="slate-card p-5">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-blue-400/80" />
-              <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+              <CheckCircle2 className="h-4 w-4 text-blue-400/70" />
+              <h3 className="text-xs font-semibold text-[#f0f6fc] uppercase tracking-wider">
                 Execution Status Distribution
               </h3>
             </div>
-            <span className="text-[11px] text-slate-500 font-mono">{trades.length} Total Plans</span>
+            <span className="text-xs text-[#8b949e] font-mono">{trades.length} Total Plans</span>
           </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-3">
             {EXECUTION_STATUSES.map((statusName) => {
               const count = statusCounts[statusName] || 0;
               const percentage = trades.length > 0 ? Math.round((count / trades.length) * 100) : 0;
@@ -288,21 +288,21 @@ export default function AnalyticsView({ trades }) {
               if (count === 0) return null;
 
               return (
-                <div key={statusName} className="p-2.5 bg-[#0c101a] rounded-xl border border-slate-800/60">
-                  <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="font-medium text-slate-300">{statusName}</span>
-                    <span className="font-mono font-semibold text-slate-400">{count} ({percentage}%)</span>
+                <div key={statusName} className="p-3 bg-[#0d1117] rounded-xl border border-[#30363d] space-y-1.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-medium text-[#c9d1d9]">{statusName}</span>
+                    <span className="font-mono font-semibold text-[#8b949e]">{count} ({percentage}%)</span>
                   </div>
-                  <div className="w-full bg-slate-800/60 h-1.5 rounded-full overflow-hidden">
+                  <div className="w-full bg-[#21262d] h-1.5 rounded-full overflow-hidden">
                     <div 
                       className={`h-full transition-all ${
                         statusName === 'Executed as Planned' 
-                          ? 'bg-emerald-400/80' 
+                          ? 'bg-emerald-500/50' 
                           : statusName === 'Impulse Trade' 
-                          ? 'bg-rose-400/80' 
+                          ? 'bg-rose-500/50' 
                           : statusName === 'Not Valid Plan'
-                          ? 'bg-amber-400/80'
-                          : 'bg-blue-400/80'
+                          ? 'bg-amber-500/50'
+                          : 'bg-blue-500/50'
                       }`}
                       style={{ width: `${percentage}%` }}
                     />
@@ -316,16 +316,16 @@ export default function AnalyticsView({ trades }) {
       </div>
 
       {/* Section 4: Psychology Tag Cloud */}
-      <div className="glass-panel p-5 border border-slate-800/60">
-        <div className="flex items-center gap-2 mb-3">
-          <Tag className="h-4 w-4 text-amber-400/80" />
-          <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">
+      <div className="slate-card p-5">
+        <div className="flex items-center gap-2 mb-3.5">
+          <Tag className="h-4 w-4 text-[#8b949e]" />
+          <h3 className="text-xs font-semibold text-[#f0f6fc] uppercase tracking-wider">
             Behavioral Tag Frequency
           </h3>
         </div>
 
         {sortedTags.length === 0 ? (
-          <p className="text-xs text-slate-500">No behavioral tags recorded yet. Tag your trades during End-of-Day review!</p>
+          <p className="text-xs text-[#8b949e]">No behavioral tags recorded yet. Tag your trades during End-of-Day review!</p>
         ) : (
           <div className="flex flex-wrap gap-2 pt-1">
             {sortedTags.map(([tagName, count]) => {
@@ -333,14 +333,12 @@ export default function AnalyticsView({ trades }) {
               return (
                 <div 
                   key={tagName}
-                  className={`flex items-center gap-2 bg-[#0c101a] border px-3 py-1 rounded-lg text-xs ${
-                    isMistake ? 'border-rose-900/60' : 'border-emerald-900/60'
+                  className={`flex items-center gap-2 bg-[#0d1117] border px-3 py-1.5 rounded-lg text-xs ${
+                    isMistake ? 'border-rose-500/20 text-rose-400/90' : 'border-emerald-500/20 text-emerald-400/90'
                   }`}
                 >
-                  <span className={isMistake ? 'text-rose-400 font-medium' : 'text-emerald-400 font-medium'}>
-                    #{tagName}
-                  </span>
-                  <span className="bg-slate-800 font-mono text-[10px] text-slate-400 px-1.5 py-0.2 rounded">
+                  <span className="font-medium">#{tagName}</span>
+                  <span className="bg-[#21262d] font-mono text-[10px] text-[#8b949e] px-1.5 py-0.5 rounded">
                     {count}
                   </span>
                 </div>
