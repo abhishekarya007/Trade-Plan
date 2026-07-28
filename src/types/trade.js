@@ -17,14 +17,18 @@ export const BIAS_TYPES = {
 
 export const SETUP_TYPES = [
   'Breakout',
-  'VWAP Pullback',
+  'Breakdown',
   'Liquidity Sweep',
   'Opening Range Breakout (ORB)',
   'Support Bounce',
   'Resistance Short',
-  'Gap & Go',
+  'Gap & Up',
+  'Gap & Down',
   'Trend Continuation',
-  'Reversal'
+  'Reversal',
+  'Magic Candle',
+  'Trap',
+  'Trend Line'
 ];
 
 export const CONVICTION_LEVELS = ['High', 'Medium', 'Low'];
@@ -76,7 +80,6 @@ export const SAMPLE_TRADES = [
     planRationale: 'Forming tight consolidation above 20 EMA on daily chart. Looking for opening range breakout with volume expansion.',
     status: 'Executed as Planned',
     outcome: 'Target Hit',
-    disciplineScore: 5,
     tags: ['Disciplined Execution', 'Followed Rules 100%'],
     eodNotes: 'Waited for 15-min candle closing confirmation. Plan executed seamlessly and target hit in afternoon session.'
   },
@@ -89,14 +92,13 @@ export const SAMPLE_TRADES = [
     tradeStyle: 'Scalping',
     weeklyBias: 'Bearish',
     dailyBias: 'Bearish',
-    setupType: 'Resistance Short',
+    setupType: 'Breakdown',
     conviction: 'High',
-    planRationale: 'IT sector showing relative weakness. Expecting rejection near previous day high & VWAP confluence.',
+    planRationale: 'IT sector showing relative weakness. Expecting breakdown rejection near previous day high.',
     status: 'Executed as Planned',
     outcome: 'Target Hit',
-    disciplineScore: 5,
     tags: ['Patience Paid Off', 'Disciplined Execution'],
-    eodNotes: 'Short setup triggered right at VWAP rejection. Target reached cleanly before closing.'
+    eodNotes: 'Short setup triggered right at breakdown level. Target reached cleanly before closing.'
   },
   {
     id: 'trade-103',
@@ -107,12 +109,11 @@ export const SAMPLE_TRADES = [
     tradeStyle: 'Directional',
     weeklyBias: 'Bullish',
     dailyBias: 'Rangebound',
-    setupType: 'VWAP Pullback',
+    setupType: 'Magic Candle',
     conviction: 'Medium',
-    planRationale: 'Post-earnings momentum continuation. Looking for first pullback to VWAP during US open session.',
+    planRationale: 'Post-earnings momentum continuation. Looking for Magic Candle trigger during US open session.',
     status: 'Planned',
     outcome: 'Pending EOD',
-    disciplineScore: 0,
     tags: [],
     eodNotes: ''
   },
@@ -130,7 +131,6 @@ export const SAMPLE_TRADES = [
     planRationale: 'Testing key daily demand zone with RSI divergence. Plan to enter on lower timeframe reversal pattern.',
     status: 'Executed with Variation',
     outcome: 'Partial Profit',
-    disciplineScore: 3,
     tags: ['Early Exit'],
     eodNotes: 'Entered slightly early before full 15-min confirmation. Booked partial profits early due to market volatility.'
   },
@@ -143,14 +143,13 @@ export const SAMPLE_TRADES = [
     tradeStyle: 'Directional',
     weeklyBias: 'Bullish',
     dailyBias: 'Bullish',
-    setupType: 'Liquidity Sweep',
+    setupType: 'Trap',
     conviction: 'High',
-    planRationale: 'Liquidity sweep below morning low followed by sharp reversal above VWAP.',
+    planRationale: 'Bear trap below morning low followed by sharp reversal above key VWAP level.',
     status: 'Valid Plan - Not Executed',
     outcome: 'No Trade',
-    disciplineScore: 2,
     tags: ['Hesitation / Missed Entry'],
-    eodNotes: 'Price touched sweep level perfectly, but hesitated to take the entry due to market noise.'
+    eodNotes: 'Price touched trap level perfectly, but hesitated to take the entry due to market noise.'
   },
   {
     id: 'trade-106',
@@ -161,13 +160,12 @@ export const SAMPLE_TRADES = [
     tradeStyle: 'Scalping',
     weeklyBias: 'Bearish',
     dailyBias: 'Bearish',
-    setupType: 'Trend Continuation',
+    setupType: 'Trend Line',
     conviction: 'High',
-    planRationale: 'Lower highs and lower lows structure on 1H chart. Shorting on intraday retest of breakdown level.',
+    planRationale: 'Breakdown of 1H trend line. Shorting on intraday retest of breakdown level.',
     status: 'Executed as Planned',
     outcome: 'Target Hit',
-    disciplineScore: 5,
     tags: ['Disciplined Execution'],
-    eodNotes: 'Clean trend continuation trade. Closed 100% position at target.'
+    eodNotes: 'Clean trend line breakdown trade. Closed 100% position at target.'
   }
 ];
