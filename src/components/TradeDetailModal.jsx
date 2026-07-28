@@ -82,8 +82,14 @@ export default function TradeDetailModal({ isOpen, onClose, trade, onEditPlan, o
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md overflow-y-auto">
-      <div className="bg-[#111622] w-full max-w-2xl overflow-hidden border border-slate-800/80 rounded-2xl shadow-xl animate-in fade-in zoom-in duration-200">
+    <div 
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md overflow-y-auto"
+    >
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="bg-[#111622] w-full max-w-2xl overflow-hidden border border-slate-800/80 rounded-2xl shadow-xl animate-in fade-in zoom-in duration-200"
+      >
         
         {/* Modal Header */}
         <div className="flex items-center justify-between p-4 border-b border-slate-800/60 bg-[#0e131f]/80">
