@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="16" fill="#0d1117"/>
+  <rect x="2" y="2" width="60" height="60" rx="14" stroke="#30363d" stroke-width="2"/>
+  
+  <!-- Sleek Glowing Candlesticks & Bullish Trend Arrow -->
+  <!-- Left Green Candle -->
+  <line x1="18" y1="38" x2="18" y2="48" stroke="#34d399" stroke-width="3" stroke-linecap="round"/>
+  <rect x="15" y="24" width="6" height="14" rx="2" fill="#34d399"/>
+  <line x1="18" y1="14" x2="18" y2="24" stroke="#34d399" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Right Cyan High Candle -->
+  <line x1="34" y1="28" x2="34" y2="42" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+  <rect x="31" y="16" width="6" height="12" rx="2" fill="#38bdf8"/>
+  <line x1="34" y1="10" x2="34" y2="16" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Breakout Trend Line & Arrow -->
+  <path d="M12 44L26 30L36 36L52 14" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M42 14H52V24" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

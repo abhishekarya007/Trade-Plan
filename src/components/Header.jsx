@@ -94,7 +94,7 @@ export default function Header({
                 </div>
               </div>
 
-              {/* View Switcher Tabs (Linear Pill Switcher) */}
+              {/* View Switcher Tabs */}
               <div className="bg-[#0d1117] p-1 rounded-lg border border-[#30363d] flex items-center gap-1">
                 <button
                   onClick={() => setActiveTab('journal')}
@@ -104,7 +104,7 @@ export default function Header({
                       : 'text-[#8b949e] hover:text-[#c9d1d9]'
                   }`}
                 >
-                  <Table className="h-3.5 w-3.5" />
+                  <Table className={`h-3.5 w-3.5 ${activeTab === 'journal' ? 'text-cyan-400' : ''}`} />
                   <span>Ledger</span>
                 </button>
 
@@ -116,7 +116,7 @@ export default function Header({
                       : 'text-[#8b949e] hover:text-[#c9d1d9]'
                   }`}
                 >
-                  <Calendar className="h-3.5 w-3.5" />
+                  <Calendar className={`h-3.5 w-3.5 ${activeTab === 'calendar' ? 'text-cyan-400' : ''}`} />
                   <span>Calendar</span>
                 </button>
 
@@ -128,7 +128,7 @@ export default function Header({
                       : 'text-[#8b949e] hover:text-[#c9d1d9]'
                   }`}
                 >
-                  <BarChart3 className="h-3.5 w-3.5" />
+                  <BarChart3 className={`h-3.5 w-3.5 ${activeTab === 'analytics' ? 'text-cyan-400' : ''}`} />
                   <span>Analytics</span>
                 </button>
               </div>
